@@ -2,13 +2,13 @@ using MediatR;
 using Shared.Domain.Bus.Command;
 using CommandDomain = Shared.Domain.Bus.Command.Command;
 
-namespace Shared.Infraestructure.Bus.MediatR.Command
+namespace Shared.Infraestructure.Bus.Command.MediatR
 {
     public class MediatRCommandBus(Mediator mediator, IMediatRCommandDirectoryWrapper commandDirectoryWrapper) : CommandBus
     {
         private readonly Mediator _mediator = mediator;
         private IMediatRCommandDirectoryWrapper _typeOfCommands = commandDirectoryWrapper;
-      
+
 
         public Task<TResponse> Ask<TResponse>(CommandDomain request)  //////////
         {

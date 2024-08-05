@@ -1,7 +1,7 @@
 using MediatR;
 using CommandDomain = Shared.Domain.Bus.Command.Command;
 
-namespace Shared.Infraestructure.Bus.MediatR.Command
+namespace Shared.Infraestructure.Bus.Command.MediatR
 {
   public interface IMediatRCommandDirectoryWrapper
   {
