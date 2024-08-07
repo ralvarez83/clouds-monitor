@@ -1,5 +1,5 @@
 using MediatR;
-using SystemAdministrator.Backups.Infraestructure.MediatR.BackupsGetAllLastNDaysQuery;
+using SystemAdministrator.LastBackups.Infraestructure.MediatR.BackupsGetAllLastNDaysQuery;
 using Shared.Domain.Bus.Query;
 using Shared.Infraestructure.Bus.Query.MediatR;
 
