@@ -14,7 +14,7 @@ appsettings.*.json
 mongo-data/
 
 # RabbitMQ data docker
-rabbitmq/
+dockers/*/rabbitmq/
 
 #VS Code configuration
 .vscode/
