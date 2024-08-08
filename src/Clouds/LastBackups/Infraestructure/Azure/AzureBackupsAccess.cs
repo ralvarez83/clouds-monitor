@@ -10,7 +10,7 @@ using Clouds.LastBackups.Infraestructure.Azure.Wrappers;
 
 namespace Clouds.LastBackups.Infraestructure.Azure;
 
-public class AzureBackupsAccess(ArmClient armClient, AzureEnvConfig azureEnvConfig) : BackupsCloudAccess
+public class AzureBackupsAccess(ArmClient armClient, AzureEnvConfig azureEnvConfig) : LastBackupsCloudAccess
 {
   private TenantsAccess _tenantsAccess = (TenantsAccess)azureEnvConfig;
   //private readonly ServiceBusSender _serviceBusSender = senderFactory.CreateClient("AzureServerMonitorQueue");

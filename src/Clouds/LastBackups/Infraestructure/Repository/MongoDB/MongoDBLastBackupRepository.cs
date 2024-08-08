@@ -10,7 +10,7 @@ using CriteriaDomain = Shared.Domain.Criteria.Criteria;
 
 namespace Clouds.LastBackups.Infraestructure.Repository.MongoDB
 {
-  public class MongoDBLastBackupRepository(LastBackupsStatusContext dbContext) : BackupsRepository
+  public class MongoDBLastBackupRepository(LastBackupsStatusContext dbContext) : LastBackupsRepository
   {
     private readonly LastBackupsStatusContext dbContext = dbContext;
 

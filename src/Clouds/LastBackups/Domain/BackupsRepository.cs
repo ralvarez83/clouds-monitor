@@ -3,7 +3,7 @@ using Shared.Domain.Criteria;
 
 namespace Clouds.LastBackups.Domain;
 
-public interface BackupsRepository
+public interface LastBackupsRepository
 {
   public void Save(LastBackupStatus backup);
   // public Task<ImmutableList<LastBackups>> SearchByCriteria(Criteria criteria);

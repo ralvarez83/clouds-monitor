@@ -12,7 +12,8 @@ namespace Shared.Infraestructure.Bus.Query.MediatR
 
         public Task<TResponse> Ask<TResponse>(QueryDomain request)
         {
-            return _mediator.Send((IRequest<TResponse>)TransformQuery(request));
+            IRequest<TResponse> query = (IRequest<TResponse>)TransformQuery(request);
+            return _mediator.Send<TResponse>(query);
         }
 
         private QueryDomain TransformQuery(QueryDomain request)

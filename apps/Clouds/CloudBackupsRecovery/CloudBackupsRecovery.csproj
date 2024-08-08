@@ -2,10 +2,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Clouds\Clouds.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Azure.ResourceManager" Version="1.12.0" />
+    <PackageReference Include="Microsoft.Extensions.Azure" Version="1.7.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
@@ -18,4 +20,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update=".\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

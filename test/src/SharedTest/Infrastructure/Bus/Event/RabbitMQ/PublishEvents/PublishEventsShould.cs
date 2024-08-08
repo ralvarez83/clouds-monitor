@@ -73,7 +73,7 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
       if (null == config)
         throw new Exception("El servicio RabbitMQConfig no encontrado");
 
-      RabbitMQSettings? settings = GetSection<RabbitMQSettings>(RabbitMQSettings.Name);
+      RabbitMQSettings? settings = GetService<RabbitMQSettings>();
       if (null == settings)
         throw new Exception("La sección RabbitMQSettings no encontrada");
 

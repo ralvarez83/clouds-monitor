@@ -9,8 +9,8 @@ namespace CloudsTest.LastBackups.Infrastructure
 {
   public class BackupsUnitTestCase
   {
-    protected Mock<BackupsCloudAccess> _cloudAccess = new Mock<BackupsCloudAccess>();
-    protected Mock<BackupsRepository> _repository = new Mock<BackupsRepository>();
+    protected Mock<LastBackupsCloudAccess> _cloudAccess = new Mock<LastBackupsCloudAccess>();
+    protected Mock<LastBackupsRepository> _repository = new Mock<LastBackupsRepository>();
     protected Mock<QueryBus> _queryBusMok = new Mock<QueryBus>();
     protected Mock<CommandBus> _commandBusMok = new Mock<CommandBus>();
 

@@ -10,10 +10,10 @@ namespace Shared.Infraestructure.Bus.Event.RabbitMQ
     private readonly RabbitMQConfig config = config;
     private const string HeaderReDelivery = "redelivery_count";
 
-    public void Publish(string exchangeName, string eventName, string message)
+    public void Publish(string eventName, string message)
     {
       IModel channel = config.Channel();
-      channel.ExchangeDeclare(exchangeName, ExchangeType.Topic);
+      channel.ExchangeDeclare(config.ExchangeName, ExchangeType.Topic);
       byte[] body = Encoding.UTF8.GetBytes(message);
 
       IBasicProperties properties = channel.CreateBasicProperties();
@@ -22,14 +22,10 @@ namespace Shared.Infraestructure.Bus.Event.RabbitMQ
                 {HeaderReDelivery, 0}
             };
 
-      channel.BasicPublish(exchange: exchangeName,
+      channel.BasicPublish(exchange: config.ExchangeName,
                            routingKey: eventName,
                            basicProperties: null,
                            body: body);
-      // channel.BasicPublish(exchange: string.Empty,
-      //           eventName,
-      //           null,
-      //           body);
     }
   }
 }

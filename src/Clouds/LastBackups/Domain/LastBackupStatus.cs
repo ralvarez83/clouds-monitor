@@ -5,8 +5,8 @@ using Shared.Domain.Bus.Event;
 namespace Clouds.LastBackups.Domain;
 
 public class LastBackupStatus(BackupId id,
-                              CloudMachineId machineId,
-                              CloudMachineName machineName,
+                              MachineId machineId,
+                              MachineName machineName,
                               BackupStatus status,
                               BackupDate? backupTime,
                               BackupType backupType,
@@ -16,8 +16,8 @@ public class LastBackupStatus(BackupId id,
                               TenantId tenantId) : AggregateRoot
 {
   public BackupId Id { get; } = id;
-  public CloudMachineId MachineId { get; } = machineId;
-  public CloudMachineName MachineName { get; } = machineName;
+  public MachineId MachineId { get; } = machineId;
+  public MachineName MachineName { get; } = machineName;
   public BackupStatus Status { get; } = status;
   public BackupDate? BackupTime { get; } = backupTime;
   public BackupType BackupType { get; } = backupType;
@@ -27,8 +27,8 @@ public class LastBackupStatus(BackupId id,
   public TenantId TenantId { get; } = tenantId;
 
   public static LastBackupStatus Create(BackupId id,
-                              CloudMachineId machineId,
-                              CloudMachineName machineName,
+                              MachineId machineId,
+                              MachineName machineName,
                               BackupStatus status,
                               BackupDate? backupTime,
                               BackupType backupType,

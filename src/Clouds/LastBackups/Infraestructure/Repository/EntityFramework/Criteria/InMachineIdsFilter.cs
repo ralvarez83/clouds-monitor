@@ -17,7 +17,7 @@ namespace Clouds.LastBackups.Infraestructure.Repository.EntityFramework
       this.machineIds = listOfMachineIds.Value;
     }
 
-    public static string GetFilterName() => CloudMachineId.GetName() + FilterOperator.In.ToString();
+    public static string GetFilterName() => MachineId.GetName() + FilterOperator.In.ToString();
 
     public Expression<Func<LastBackupStatusDto, bool>> ToExpression()
     {

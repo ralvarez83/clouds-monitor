@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Options;
-using SharedTest.Infrastructure;
 
-namespace SharedTest.Infrastructure
+namespace Shared.Infrastructure.Enviroment
 {
   public class LoadEnvironmentVariables(IOptions<List<EnvironmentVariables>> variables)
   {
@@ -12,6 +11,15 @@ namespace SharedTest.Infrastructure
       foreach (EnvironmentVariables variable in variables)
       {
         Environment.SetEnvironmentVariable(variable.Key, variable.Value);
+      }
+    }
+    public void RegisterVariablesIfNotExists()
+    {
+      foreach (EnvironmentVariables variable in variables)
+      {
+        string? environmentVariable = Environment.GetEnvironmentVariable(variable.Key);
+        if (null == environmentVariable)
+          Environment.SetEnvironmentVariable(variable.Key, variable.Value);
       }
     }
   }

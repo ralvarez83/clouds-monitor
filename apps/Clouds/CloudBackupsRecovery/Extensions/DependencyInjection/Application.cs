@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Clouds.LastBackups.Domain;
 using Clouds.LastBackups.Infraestructure.Azure;
+using Clouds.LastBackups.Application.UpdateLastBackups;
+using Clouds.LastBackups.Application.GetCloudLast;
 
 namespace CloudBackupsRecovery.Extensions.DependencyInjection
 {
@@ -9,11 +11,9 @@ namespace CloudBackupsRecovery.Extensions.DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
 
-      services.AddTransient<BackupsCloudAccess, AzureBackupsAccess>();
-      // services.AddTransient<BackupsGetAllLastNDays, BackupsGetAllLastNDays>();
-      // services.AddTransient<BackupsGetLast, BackupsGetLast>();
+      services.AddTransient<UpdateLastBackups, UpdateLastBackups>();
+      services.AddTransient<GetCloudLastBackups, GetCloudLastBackups>();
 
-      //services.AddQueryServices(AssemblyHelper.GetInstance(Assemblies.Mooc));
       return services;
     }
   }

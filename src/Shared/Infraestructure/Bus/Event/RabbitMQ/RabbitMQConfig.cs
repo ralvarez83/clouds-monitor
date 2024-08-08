@@ -12,6 +12,14 @@ namespace Clouds.LastBackups.Infraestructure.Bus.RabbitMQ
         private static IModel _channel { get; set; }
         private Exchanges exchange { get; }
 
+        public string ExchangeName
+        {
+            get
+            {
+                return (null != exchange) ? exchange.Name : string.Empty;
+            }
+        }
+
         public RabbitMQConfig(IOptions<RabbitMQSettings> rabbitMqParams)
         {
             RabbitMQSettings configParams = rabbitMqParams.Value;

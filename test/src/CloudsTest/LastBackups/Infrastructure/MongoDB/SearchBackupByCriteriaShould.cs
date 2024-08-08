@@ -88,7 +88,7 @@ namespace CloudsTest.LastBackups.Infrastructure.MongoDB
 
         Filters filters = new Filters();
 
-        Filter filterIds = new Filter(CloudMachineId.GetName(), listMachineIds.ToString(), FilterOperator.In);
+        Filter filterIds = new Filter(MachineId.GetName(), listMachineIds.ToString(), FilterOperator.In);
         filters.Add(filterIds);
         CriteriaDomian criteria = new CriteriaDomian(filters);
 

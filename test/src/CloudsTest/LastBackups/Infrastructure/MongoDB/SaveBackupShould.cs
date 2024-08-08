@@ -47,8 +47,8 @@ namespace CloudsTest.LastBackups.Infrastructure.MongoDB
       // When a field change and we save the element
       BackupDate newBackupDate = new BackupDate(DateTime.Now);
       LastBackupStatus lastBackupStatusUpdated = new(new BackupId(lastBackupStatus.Id.Value),
-                                                    new CloudMachineId(lastBackupStatus.MachineId.Value),
-                                                    new CloudMachineName(lastBackupStatus.MachineName.Value),
+                                                    new MachineId(lastBackupStatus.MachineId.Value),
+                                                    new MachineName(lastBackupStatus.MachineName.Value),
                                                     BackupStatus.Parse(lastBackupStatus.Status.ToString()),
                                                     newBackupDate,
                                                     BackupType.Parse(lastBackupStatus.BackupType.ToString()),

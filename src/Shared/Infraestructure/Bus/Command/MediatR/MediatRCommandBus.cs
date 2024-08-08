@@ -10,17 +10,12 @@ namespace Shared.Infraestructure.Bus.Command.MediatR
         private IMediatRCommandDirectoryWrapper _typeOfCommands = commandDirectoryWrapper;
 
 
-        public Task<TResponse> Ask<TResponse>(CommandDomain request)  //////////
-        {
-            return _mediator.Send((IRequest<TResponse>)TransformQuery(request));
-        }
-
         public Task Dispatch(CommandDomain command)
         {
-            throw new NotImplementedException();
+            return _mediator.Send((IRequest)TransformCommand(command));
         }
 
-        private CommandDomain TransformQuery(CommandDomain request)
+        private CommandDomain TransformCommand(CommandDomain request)
         {
             Func<CommandDomain, IBaseRequest>? wrapper = _typeOfCommands.GetWrappers().GetValueOrDefault(request.GetType());
             if (null != wrapper)

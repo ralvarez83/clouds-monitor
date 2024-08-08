@@ -113,7 +113,7 @@ namespace CloudsTest.LastBackups.Application.RecoverLastBackups
       _repository
         .Setup(_ => _.Search(
           It.Is<Criteria>(
-            criteria => criteria.filters.FiltersFiled.First().field == CloudMachineId.GetName() &&
+            criteria => criteria.filters.FiltersFiled.First().field == MachineId.GetName() &&
                         criteria.filters.FiltersFiled.First().fieldOperator == FilterOperator.In)))
         .Returns<Criteria>((criteria) =>
                 {

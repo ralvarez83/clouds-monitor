@@ -11,9 +11,9 @@ using Shared.Domain.Criteria.Filters;
 
 namespace Clouds.LastBackups.Application.UpdateLastBackups
 {
-  public class UpdateLastBackups(BackupsRepository repository, QueryBus queryBus, EventBus eventBus)
+  public class UpdateLastBackups(LastBackupsRepository repository, QueryBus queryBus, EventBus eventBus)
   {
-    private readonly BackupsRepository repository = repository;
+    private readonly LastBackupsRepository repository = repository;
     private readonly QueryBus queryBus = queryBus;
     private readonly EventBus eventBus = eventBus;
 
@@ -25,27 +25,21 @@ namespace Clouds.LastBackups.Application.UpdateLastBackups
       {
         FilterValueList listMachineIds = new();
         listMachineIds.AddRange(lastBackups.AsParallel().Select(backup => backup.MachineId.Value).ToList<string>());
-        Filter filterIds = new Filter(CloudMachineId.GetName(), listMachineIds.ToString(), FilterOperator.In);
+        Filter filterIds = new Filter(MachineId.GetName(), listMachineIds.ToString(), FilterOperator.In);
         Filters filters = new Filters();
         filters.Add(filterIds);
         Criteria criteria = new Criteria(filters);
 
         ImmutableList<LastBackupStatus> backupsInRepository = await repository.Search(criteria);
+        List<string> machineIds = backupsInRepository.Select(backup => backup.MachineId.Value).ToList();
 
-        foreach (LastBackupStatus backupInRepository in backupsInRepository)
-        {
-          LastBackupStatus? cloudBackup = lastBackups.AsParallel().Where(backup => backup.MachineId.Value == backupInRepository.MachineId.Value).FirstOrDefault();
-          if (null != cloudBackup && backupInRepository.Id.Value == cloudBackup.Id.Value)
-          {
-            lastBackups = lastBackups.AsParallel().Where(backup => backup.Id.Value != cloudBackup.Id.Value).ToImmutableList();
-          }
-        }
+        List<LastBackupStatus> lastBackupsToSave = lastBackups.Where(backup => !machineIds.Contains(backup.MachineId.Value)).ToList();
 
-        lastBackups.ForEach(action: repository.Save);
+        lastBackupsToSave.ForEach(action: repository.Save);
 
         List<DomainEvent> events = new List<DomainEvent>();
 
-        foreach (LastBackupStatus backupStatus in lastBackups)
+        foreach (LastBackupStatus backupStatus in lastBackupsToSave)
         {
           events.AddRange(backupStatus.PullDomainEvents());
         }

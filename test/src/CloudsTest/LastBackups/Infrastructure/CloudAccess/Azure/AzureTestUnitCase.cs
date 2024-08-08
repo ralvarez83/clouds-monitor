@@ -7,6 +7,7 @@ using Clouds.LastBackups.Infraestructure.Azure;
 using Clouds.LastBackups.Infraestructure.Azure.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Infrastructure.Enviroment;
 using SharedTest.Infrastructure;
 
 namespace CloudsTest.LastBackups.Infrastructure.CloudAccess.Azure
@@ -52,7 +53,7 @@ namespace CloudsTest.LastBackups.Infrastructure.CloudAccess.Azure
                 .Build();
 
         services.Configure<List<Suscriptions>>(configuration.GetSection(Suscriptions.Name));
-        services.Configure<List<EnvironmentVariables>>(configuration.GetSection(EnvironmentVariables.NAME));
+        services.Configure<List<EnvironmentVariables>>(configuration.GetSection(EnvironmentVariables.Name));
         services.AddScoped<AzureEnvConfig, TenantsAccess>();
         services.AddScoped<LoadEnvironmentVariables, LoadEnvironmentVariables>();
       };

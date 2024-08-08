@@ -30,8 +30,8 @@ namespace Clouds.LastBackups.Infraestructure.Azure.Wrappers
     {
       IaasVmProtectedItem backupData = (IaasVmProtectedItem)item;
       BackupId backupId = new BackupId();
-      CloudMachineId cloudMachineId = new CloudMachineId(backupData.VirtualMachineId);
-      CloudMachineName cloudMachineName = new CloudMachineName(backupData.FriendlyName);
+      MachineId cloudMachineId = new MachineId(backupData.VirtualMachineId);
+      MachineName cloudMachineName = new MachineName(backupData.FriendlyName);
       BackupStatus backupStatus = BackupStatusWrapper.FromString(backupData.LastBackupStatus);
       BackupDate? backupTime = backupData.LastBackupOn.HasValue ? new BackupDate(backupData.LastBackupOn.Value) : null;
       BackupDate? lastRecovery = backupData.LastRecoverOn.HasValue ? new BackupDate(backupData.LastRecoverOn.Value) : null;

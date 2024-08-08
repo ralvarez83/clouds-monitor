@@ -9,8 +9,8 @@ public class LastBackupStatusWrapper : DomainWrapperFromDto<Domain.LastBackupSta
   {
     return Domain.LastBackupStatus.Create(
       id: new BackupId(new Guid(backup.Id)),
-      machineId: new CloudMachineId(backup.MachineId),
-      machineName: new CloudMachineName(backup.MachineName),
+      machineId: new MachineId(backup.MachineId),
+      machineName: new MachineName(backup.MachineName),
       status: BackupStatus.Parse(backup.Status),
       backupTime: backup.BackupTime.HasValue ? new BackupDate(backup.BackupTime.Value) : null,
       backupType: BackupType.Parse(backup.BackupType),

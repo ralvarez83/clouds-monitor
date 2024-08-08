@@ -1,6 +1,7 @@
 using Clouds.LastBackups.Infraestructure.Bus.RabbitMQ;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using Shared.Domain.Bus.Event;
 using Shared.Infraestructure.Bus.Event.RabbitMQ;
@@ -22,15 +23,27 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
 
-        services.Configure<RabbitMQSettings>(configuration.GetSection(RabbitMQSettings.Name));
-        services.AddScoped<RabbitMQConfig, RabbitMQConfig>();
+        RabbitMQSettings? rabbitMQSettings = configuration.GetSection(RabbitMQSettings.Name).Get<RabbitMQSettings>();
+        int postNames = TimeSpan.FromTicks(DateTime.Now.Ticks).Milliseconds;
+
+        rabbitMQSettings.Exchange = new Exchanges(
+          rabbitMQSettings.Exchange.Name + postNames,
+          rabbitMQSettings.Exchange.Subscribers.Select(suscriber => new Subscribers(suscriber.QueuName + postNames, suscriber.EventName)).ToArray()
+          );
+        services.AddScoped<RabbitMQSettings>(servicesProvider => rabbitMQSettings);
+
+        services.AddScoped<RabbitMQConfig>(serviceProvider =>
+        {
+          IOptions<RabbitMQSettings> rabbitMqParams = Options.Create(rabbitMQSettings);
+          return new RabbitMQConfig(rabbitMqParams);
+        });
         services.AddScoped<RabbitMQPublisher, RabbitMQPublisher>();
         services.AddScoped<EventBus>(serviceProvider =>
         {
           RabbitMQPublisher? publisher = serviceProvider.GetService<RabbitMQPublisher>();
           if (null == publisher)
             throw new Exception("RabbitMQPublisher not found");
-          return new RabbitMQEventBus(publisher, "test_domain_events");
+          return new RabbitMQEventBus(publisher);
           // return new RabbitMQEventBus(publisher, "test_domain_events_" + TimeSpan.FromTicks(DateTime.Now.Ticks).Milliseconds);
         }
         );
@@ -76,7 +89,7 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
       if (null == config)
         throw new Exception("El servicio RabbitMQConfig no encontrado");
 
-      RabbitMQSettings? settings = GetSection<RabbitMQSettings>(RabbitMQSettings.Name);
+      RabbitMQSettings? settings = GetService<RabbitMQSettings>();
       if (null == settings)
         throw new Exception("La sección RabbitMQSettings no encontrada");
 

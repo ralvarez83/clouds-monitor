@@ -3,9 +3,9 @@ using Clouds.LastBackups.Domain;
 
 namespace Clouds.LastBackups.Application.GetCloudLast
 {
-    public class GetCloudLastBackups(BackupsCloudAccess backupsCloudRepository)
+    public class GetCloudLastBackups(LastBackupsCloudAccess backupsCloudRepository)
     {
-        private BackupsCloudAccess _backupsCloudRepository = backupsCloudRepository;
+        private LastBackupsCloudAccess _backupsCloudRepository = backupsCloudRepository;
 
         public async Task<ImmutableList<LastBackupStatus>> Run()
         {
