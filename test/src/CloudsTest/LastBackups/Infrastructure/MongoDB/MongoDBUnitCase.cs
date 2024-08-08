@@ -7,25 +7,24 @@ namespace CloudsTest.LastBackups.Infrastructure.MongoDB
 {
   public class MongoDBUnitCase : InfrastructureTestCase, IDisposable
   {
-    private string? mongoDBConnectionString;
-    private const string DATA_BASE_NAME_PREFIX = "MongoDBUnitCase";
+    private MongoDBSettings mongoDBSettings;
 
     private string dataBaseName;
 
     public MongoDBUnitCase()
     {
-      dataBaseName = DATA_BASE_NAME_PREFIX + DateTime.Now.Ticks;
+      dataBaseName = mongoDBSettings.DatabaseName + DateTime.Now.Ticks;
     }
 
     protected void DropDataBase()
     {
-      var client = new MongoClient(mongoDBConnectionString);
+      var client = new MongoClient(mongoDBSettings.MongoDBURI);
       client.DropDatabase(dataBaseName);
     }
 
     protected LastBackupsStatusContext GetTemporalDBContext()
     {
-      var client = new MongoClient(mongoDBConnectionString);
+      var client = new MongoClient(mongoDBSettings.MongoDBURI);
       return LastBackupsStatusContext.Create(client.GetDatabase(dataBaseName)); ;
     }
 
@@ -36,7 +35,10 @@ namespace CloudsTest.LastBackups.Infrastructure.MongoDB
 
     protected override void Setup()
     {
-      mongoDBConnectionString = GetConnectionString("mongoDB");
+      MongoDBSettings? mongoSettings = GetSection<MongoDBSettings>(MongoDBSettings.Name);
+      if (null == mongoSettings)
+        throw new Exception("Section MongoDBSettings not found");
+      mongoDBSettings = mongoSettings;
     }
 
     public void Dispose()
