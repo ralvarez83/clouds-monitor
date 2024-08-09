@@ -15,10 +15,10 @@ Para su implementación se ha usado la metodología TDD que nos indica que hemos
 
 Componentes:
 
-- Front: <span style="color:gray">To do</span>
-- API: <span style="color:gray">To do</span>
-- LastBackupSuscriber: <span style="color:gray">To do</span>
-- CloudRecoveryLastBackups: **<span style="color:green">To do</span>**
+- Front: _To do_
+- API: _To do_
+- LastBackupSuscriber: _To do_
+- CloudRecoveryLastBackups: **DONE**
 
 ## Tecnologías Utilizadas
 
