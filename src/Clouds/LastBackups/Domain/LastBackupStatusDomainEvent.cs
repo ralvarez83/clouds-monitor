@@ -6,12 +6,11 @@ namespace Clouds.LastBackups.Domain
 {
   public class LastBackupStatusDomainEvent : DomainEvent
   {
-    public LastBackupStatusDomainEvent(string backupId, string machineId, string machineName, string status,
+    public LastBackupStatusDomainEvent(string machineId, string machineName, string status,
                                         string backupTime, string backupType, string lastRecoveryPoint,
                                         string vaultId, string suscriptionId, string tenantId,
                                         string? eventId = null, SimpleDate? occurredOn = null) : base(machineId, eventId, occurredOn)
     {
-      BackupId = backupId;
       MachineName = machineName;
       Status = status;
       BackupTime = backupTime;
@@ -21,8 +20,6 @@ namespace Clouds.LastBackups.Domain
       SuscriptionId = suscriptionId;
       TenantId = tenantId;
     }
-
-    public string BackupId { get; }
     public string MachineName { get; }
     public string Status { get; }
     public string BackupTime { get; }
@@ -38,7 +35,6 @@ namespace Clouds.LastBackups.Domain
     {
       return new Dictionary<string, string>
             {
-              {"backup_id", BackupId},
               {"machine_name", MachineName},
               {"status", Status },
               {"backup_time", BackupTime },

@@ -38,8 +38,8 @@ namespace CloudsTest.LastBackups.Infrastructure.MongoDB
     [Fact]
     public async void ReturnAllElements_When_CriteriaIsEmpty()
     {
-      // Given Database is empty
-      ImmutableList<LastBackupStatusDto> backupsInDB = BackupsDtoFactory.BuildArrayOfBackupDtosRandom();
+      // Given Database is not empty
+      ImmutableList<LastBackupsStatusEntity> backupsInDB = BackupsEntityFactory.BuildArrayOfBackupEntitiesRandom();
       using (LastBackupsStatusContext emptyContext = GetTemporalDBContext())
       {
         emptyContext.LastBackupStatus.AddRange(backupsInDB);
@@ -67,14 +67,14 @@ namespace CloudsTest.LastBackups.Infrastructure.MongoDB
     public async void ReturnBackups_WithMachineId_InCriteria()
     {
       // Given Database has LastBackups records
-      ImmutableList<LastBackupStatusDto> backupsInDB = BackupsDtoFactory.BuildArrayOfBackupDtosRandom();
+      ImmutableList<LastBackupsStatusEntity> backupsInDB = BackupsEntityFactory.BuildArrayOfBackupEntitiesRandom();
       using (LastBackupsStatusContext emptyContext = GetTemporalDBContext())
       {
         emptyContext.LastBackupStatus.AddRange(backupsInDB);
         emptyContext.SaveChanges();
       }
 
-      ImmutableList<LastBackupStatusDto> backupsMustReturn = backupsInDB.AsParallel().Where((backup, index) => index % 2 == 0).ToImmutableList();
+      ImmutableList<LastBackupsStatusEntity> backupsMustReturn = backupsInDB.AsParallel().Where((backup, index) => index % 2 == 0).ToImmutableList();
 
       ImmutableList<Clouds.LastBackups.Domain.LastBackupStatus> returnList = [];
 
@@ -84,7 +84,7 @@ namespace CloudsTest.LastBackups.Infrastructure.MongoDB
         MongoDBLastBackupRepository repository = new MongoDBLastBackupRepository(whenContext);
         FilterValueList listMachineIds = new();
 
-        listMachineIds.AddRange(backupsMustReturn.AsParallel().Select(backup => backup.MachineId).ToList<string>());
+        listMachineIds.AddRange(backupsMustReturn.AsParallel().Select(backup => backup.Id).ToList<string>());
 
         Filters filters = new Filters();
 
@@ -97,7 +97,7 @@ namespace CloudsTest.LastBackups.Infrastructure.MongoDB
 
       // Then return only the backups of the MachineIds
       Assert.Equal(backupsMustReturn.Count(), returnList.Count());
-      Assert.Equal(backupsMustReturn.Count(), returnList.Where(backup => backupsMustReturn.Exists(backupMustBe => backupMustBe.Id == backup.Id.Value.ToString())).Count());
+      Assert.Equal(backupsMustReturn.Count(), returnList.Where(backup => backupsMustReturn.Exists(backupMustBe => backupMustBe.Id == backup.MachineId.Value.ToString())).Count());
       DropDataBase();
     }
   }

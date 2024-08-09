@@ -29,7 +29,6 @@ namespace Clouds.LastBackups.Infraestructure.Azure.Wrappers
     private static Domain.LastBackupStatus? FromVMMachine(BackupGenericProtectedItem item, string itemSuscriptionId, string itemTenantId)
     {
       IaasVmProtectedItem backupData = (IaasVmProtectedItem)item;
-      BackupId backupId = new BackupId();
       MachineId cloudMachineId = new MachineId(backupData.VirtualMachineId);
       MachineName cloudMachineName = new MachineName(backupData.FriendlyName);
       BackupStatus backupStatus = BackupStatusWrapper.FromString(backupData.LastBackupStatus);
@@ -41,7 +40,6 @@ namespace Clouds.LastBackups.Infraestructure.Azure.Wrappers
       TenantId tenantId = new TenantId(itemTenantId);
 
       return new Domain.LastBackupStatus(
-        backupId,
         cloudMachineId,
         cloudMachineName,
         backupStatus,

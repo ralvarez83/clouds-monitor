@@ -8,7 +8,6 @@ public class LastBackupStatusDtoWrapper : DtoWrapperFromDomain<LastBackupStatusD
   public static LastBackupStatusDto FromDomain(LastBackupStatus backup)
   {
     return new LastBackupStatusDto(
-      backup.Id.Value.ToString(),
       backup.MachineId.Value,
       backup.MachineName.Value,
       backup.Status.ToString(),

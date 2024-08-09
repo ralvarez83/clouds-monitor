@@ -1,19 +1,19 @@
 using System.Collections.Immutable;
-using Clouds.LastBackups.Application.Dtos;
+using Clouds.LastBackups.Infraestructure.Repository.MongoDB;
 using Shared.Domain.Criteria.Filters;
 using Shared.Infraestructure.Respository.EntityFramework.Criteria;
 
 namespace Clouds.LastBackups.Infraestructure.Repository.EntityFramework
 {
-  public static class EntityFrameworkFiltersWrapper
+  public static class EntityFrameworkFiltersWrapper<T> where T : Entity
   {
-    public static ImmutableList<IFilter<LastBackupStatusDto>> FromDomainFilters(ImmutableList<Filter> filters)
+    public static ImmutableList<IFilter<T>> FromDomainFilters(ImmutableList<Filter> filters)
     {
-      ImmutableList<IFilter<LastBackupStatusDto>> entityFilterList = [];
+      ImmutableList<IFilter<T>> entityFilterList = [];
 
       foreach (Filter item in filters)
       {
-        IFilter<LastBackupStatusDto>? entityFilter = FromDoaminFilter(item);
+        IFilter<T>? entityFilter = FromDoaminFilter(item);
         if (null != entityFilter)
           entityFilterList = [.. entityFilterList, entityFilter];
       }
@@ -21,14 +21,14 @@ namespace Clouds.LastBackups.Infraestructure.Repository.EntityFramework
       return entityFilterList;
     }
 
-    private static IFilter<LastBackupStatusDto>? FromDoaminFilter(Filter filter)
+    private static IFilter<T>? FromDoaminFilter(Filter filter)
     {
-      Dictionary<string, Func<string, IFilter<LastBackupStatusDto>>> filterMapper = new Dictionary<string, Func<string, IFilter<LastBackupStatusDto>>> {
-        { InMachineIdsFilter.GetFilterName(), (string filterValue) => new InMachineIdsFilter(filterValue)}
+      Dictionary<string, Func<string, IFilter<T>>> filterMapper = new Dictionary<string, Func<string, IFilter<T>>> {
+        { InMachineIdsFilter<T>.GetFilterName(), (string filterValue) => new InMachineIdsFilter<T>(filterValue)}
       };
 
       string filterName = filter.field + filter.fieldOperator.ToString();
-      Func<string, IFilter<LastBackupStatusDto>>? filterWrapper = filterMapper.GetValueOrDefault(filterName);
+      Func<string, IFilter<T>>? filterWrapper = filterMapper.GetValueOrDefault(filterName);
 
       if (null != filterWrapper)
       {

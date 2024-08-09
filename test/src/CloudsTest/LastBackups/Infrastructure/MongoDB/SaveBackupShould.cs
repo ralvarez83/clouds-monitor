@@ -40,19 +40,18 @@ namespace CloudsTest.LastBackups.Infrastructure.MongoDB
       LastBackupStatus lastBackupStatus = BackupsFactory.BuildBackupRandom();
       using (LastBackupsStatusContext existingDataContext = GetTemporalDBContext())
       {
-        existingDataContext.LastBackupStatus.Add(LastBackupStatusDtoWrapper.FromDomain(lastBackupStatus));
+        existingDataContext.LastBackupStatus.Add(LastBackupsStatusEntity.FromDomain(lastBackupStatus));
         existingDataContext.SaveChanges();
       }
 
       // When a field change and we save the element
       BackupDate newBackupDate = new BackupDate(DateTime.Now);
-      LastBackupStatus lastBackupStatusUpdated = new(new BackupId(lastBackupStatus.Id.Value),
-                                                    new MachineId(lastBackupStatus.MachineId.Value),
+      LastBackupStatus lastBackupStatusUpdated = new(new MachineId(lastBackupStatus.MachineId.Value),
                                                     new MachineName(lastBackupStatus.MachineName.Value),
                                                     BackupStatus.Parse(lastBackupStatus.Status.ToString()),
                                                     newBackupDate,
                                                     BackupType.Parse(lastBackupStatus.BackupType.ToString()),
-                                                    new BackupDate(lastBackupStatus.LastRecoveryPoint.Value),
+                                                    null != lastBackupStatus.LastRecoveryPoint ? new BackupDate(lastBackupStatus.LastRecoveryPoint.Value) : null,
                                                     new VaultId(lastBackupStatus.VaultId.Value),
                                                     new SuscriptionId(lastBackupStatus.SuscriptionId.Value),
                                                     new TenantId(lastBackupStatus.TenantId.Value));
@@ -69,8 +68,8 @@ namespace CloudsTest.LastBackups.Infrastructure.MongoDB
       using (LastBackupsStatusContext thenContext = GetTemporalDBContext())
       {
         Assert.Equal(1, thenContext.LastBackupStatus.Count());
-        LastBackupStatusDto backupInDB = thenContext.LastBackupStatus.First();
-        LastBackupStatusDto backupUpdated = LastBackupStatusDtoWrapper.FromDomain(lastBackupStatusUpdated);
+        LastBackupsStatusEntity backupInDB = thenContext.LastBackupStatus.First();
+        LastBackupsStatusEntity backupUpdated = LastBackupsStatusEntity.FromDomain(lastBackupStatusUpdated);
         Assert.Equal(backupUpdated.Id, backupInDB.Id);
         Assert.NotNull(backupInDB.BackupTime);
         Assert.NotNull(backupUpdated.BackupTime);

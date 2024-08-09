@@ -4,8 +4,7 @@ using Shared.Domain.Bus.Event;
 
 namespace Clouds.LastBackups.Domain;
 
-public class LastBackupStatus(BackupId id,
-                              MachineId machineId,
+public class LastBackupStatus(MachineId machineId,
                               MachineName machineName,
                               BackupStatus status,
                               BackupDate? backupTime,
@@ -15,7 +14,6 @@ public class LastBackupStatus(BackupId id,
                               SuscriptionId suscriptionId,
                               TenantId tenantId) : AggregateRoot
 {
-  public BackupId Id { get; } = id;
   public MachineId MachineId { get; } = machineId;
   public MachineName MachineName { get; } = machineName;
   public BackupStatus Status { get; } = status;
@@ -26,8 +24,7 @@ public class LastBackupStatus(BackupId id,
   public SuscriptionId SuscriptionId { get; } = suscriptionId;
   public TenantId TenantId { get; } = tenantId;
 
-  public static LastBackupStatus Create(BackupId id,
-                              MachineId machineId,
+  public static LastBackupStatus Create(MachineId machineId,
                               MachineName machineName,
                               BackupStatus status,
                               BackupDate? backupTime,
@@ -38,12 +35,12 @@ public class LastBackupStatus(BackupId id,
                               TenantId tenantId)
   {
     LastBackupStatus lastBackupStatus =
-      new LastBackupStatus(id, machineId, machineName, status, backupTime, backupType, lastRecoveryPoint,
+      new LastBackupStatus(machineId, machineName, status, backupTime, backupType, lastRecoveryPoint,
                           vaultId, suscriptionId, tenantId);
 
     lastBackupStatus.Record(
-      new LastBackupStatusDomainEvent(lastBackupStatus.Id.Value.ToString(), lastBackupStatus.MachineId.Value,
-                                      lastBackupStatus.MachineName.Value, lastBackupStatus.Status.ToString(),
+      new LastBackupStatusDomainEvent(lastBackupStatus.MachineId.Value, lastBackupStatus.MachineName.Value,
+                                      lastBackupStatus.Status.ToString(),
                                       lastBackupStatus.BackupTime != null ? lastBackupStatus.BackupTime.ToString() : string.Empty,
                                       lastBackupStatus.BackupType.ToString(),
                                       lastBackupStatus.LastRecoveryPoint != null ? lastBackupStatus.LastRecoveryPoint.ToString() : string.Empty,

@@ -11,9 +11,9 @@ namespace CloudsTest.LastBackups.Infrastructure.MongoDB
 
     private string dataBaseName;
 
-    public MongoDBUnitCase()
+    public MongoDBUnitCase() : base()
     {
-      dataBaseName = mongoDBSettings.DatabaseName + DateTime.Now.Ticks;
+      dataBaseName = null != mongoDBSettings ? mongoDBSettings.DatabaseName + DateTime.Now.Ticks : string.Empty;
     }
 
     protected void DropDataBase()

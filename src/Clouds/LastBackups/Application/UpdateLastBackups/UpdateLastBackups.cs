@@ -31,9 +31,9 @@ namespace Clouds.LastBackups.Application.UpdateLastBackups
         Criteria criteria = new Criteria(filters);
 
         ImmutableList<LastBackupStatus> backupsInRepository = await repository.Search(criteria);
-        List<string> machineIds = backupsInRepository.Select(backup => backup.MachineId.Value).ToList();
+        List<string> filter = backupsInRepository.Select(backup => backup.MachineId.Value.ToString() + backup.BackupTime.ToString()).ToList();
 
-        List<LastBackupStatus> lastBackupsToSave = lastBackups.Where(backup => !machineIds.Contains(backup.MachineId.Value)).ToList();
+        List<LastBackupStatus> lastBackupsToSave = lastBackups.Where(backup => !filter.Contains(backup.MachineId.Value.ToString() + backup.BackupTime.ToString())).ToList();
 
         lastBackupsToSave.ForEach(action: repository.Save);
 

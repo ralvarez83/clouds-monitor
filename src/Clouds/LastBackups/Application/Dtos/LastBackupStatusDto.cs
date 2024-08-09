@@ -1,7 +1,6 @@
 namespace Clouds.LastBackups.Application.Dtos;
 
 public record LastBackupStatusDto(
-  string Id,
   string MachineId,
   string MachineName,
   string Status,

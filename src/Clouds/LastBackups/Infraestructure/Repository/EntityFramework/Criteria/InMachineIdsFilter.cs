@@ -1,12 +1,14 @@
 using System.Linq.Expressions;
 using Clouds.LastBackups.Application.Dtos;
+using Clouds.LastBackups.Domain;
 using Clouds.LastBackups.Domain.ValueObjects;
+using Clouds.LastBackups.Infraestructure.Repository.MongoDB;
 using Shared.Domain.Criteria.Filters;
 using Shared.Infraestructure.Respository.EntityFramework.Criteria;
 
 namespace Clouds.LastBackups.Infraestructure.Repository.EntityFramework
 {
-  public class InMachineIdsFilter : IFilter<LastBackupStatusDto>
+  public class InMachineIdsFilter<T> : IFilter<T> where T : Entity
   {
     private readonly List<string> machineIds;
 
@@ -19,9 +21,9 @@ namespace Clouds.LastBackups.Infraestructure.Repository.EntityFramework
 
     public static string GetFilterName() => MachineId.GetName() + FilterOperator.In.ToString();
 
-    public Expression<Func<LastBackupStatusDto, bool>> ToExpression()
+    public Expression<Func<T, bool>> ToExpression()
     {
-      return backup => this.machineIds.Contains(backup.MachineId);
+      return backup => this.machineIds.Contains(backup.Id);
     }
   }
 }

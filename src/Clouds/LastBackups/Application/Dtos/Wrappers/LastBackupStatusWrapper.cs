@@ -8,7 +8,6 @@ public class LastBackupStatusWrapper : DomainWrapperFromDto<Domain.LastBackupSta
   public static Domain.LastBackupStatus FromDto(LastBackupStatusDto backup)
   {
     return Domain.LastBackupStatus.Create(
-      id: new BackupId(new Guid(backup.Id)),
       machineId: new MachineId(backup.MachineId),
       machineName: new MachineName(backup.MachineName),
       status: BackupStatus.Parse(backup.Status),

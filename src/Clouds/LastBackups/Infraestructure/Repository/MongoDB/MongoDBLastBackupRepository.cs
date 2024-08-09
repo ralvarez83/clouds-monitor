@@ -1,7 +1,4 @@
 using System.Collections.Immutable;
-using Clouds.LastBackups.Application.Dtos;
-using Clouds.LastBackups.Application.Dtos.Transformation;
-using Clouds.LastBackups.Application.Dtos.Wrappers;
 using Clouds.LastBackups.Domain;
 using Clouds.LastBackups.Infraestructure.Repository.EntityFramework;
 using MongoDB.Driver.Linq;
@@ -16,32 +13,43 @@ namespace Clouds.LastBackups.Infraestructure.Repository.MongoDB
 
     public void Save(LastBackupStatus backup)
     {
-      LastBackupStatusDto lastBackupStatusDto = LastBackupStatusDtoWrapper.FromDomain(backup);
-      bool isInDB = dbContext.LastBackupStatus.Any(backup => backup.MachineId == lastBackupStatusDto.MachineId);
+      LastBackupsStatusEntity? backupInDB = dbContext.LastBackupStatus.Where(backupInDB => backupInDB.Id == backup.MachineId.Value).FirstOrDefault();
 
-      if (isInDB)
+      if (null != backupInDB)
       {
-        dbContext.LastBackupStatus.Update(lastBackupStatusDto);
+        backupInDB.BackupTime = null != backup.BackupTime ? backup.BackupTime.Value : null;
+        backupInDB.LastRecoveryPoint = null != backup.LastRecoveryPoint ? backup.LastRecoveryPoint.Value : null;
+        backupInDB.Status = backup.Status.ToString();
+
+        dbContext.LastBackupStatus.Update(backupInDB);
       }
       else
       {
-        dbContext.Add(lastBackupStatusDto);
+        dbContext.Add(LastBackupsStatusEntity.FromDomain(backup));
       }
-      dbContext.SaveChanges();
+      try
+      {
+        dbContext.SaveChanges();
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine(ex);
+      }
     }
+
 
     public Task<ImmutableList<LastBackupStatus>> Search(CriteriaDomain criteria)
     {
-      IQueryable<LastBackupStatusDto> backupsToReturn = dbContext.LastBackupStatus;
+      IQueryable<LastBackupsStatusEntity> backupsToReturn = dbContext.LastBackupStatus;
       if (criteria.filters.HasFilters())
       {
-        ImmutableList<IFilter<LastBackupStatusDto>> filters = EntityFrameworkFiltersWrapper.FromDomainFilters(criteria.filters.FiltersFiled);
+        ImmutableList<IFilter<LastBackupsStatusEntity>> filters = EntityFrameworkFiltersWrapper<LastBackupsStatusEntity>.FromDomainFilters(criteria.filters.FiltersFiled);
         foreach (var filter in filters)
         {
           backupsToReturn = backupsToReturn.Where(filter.ToExpression());
         }
       }
-      return Task.Run(() => backupsToReturn.Select(LastBackupStatusWrapper.FromDto).ToImmutableList());
+      return Task.Run(() => backupsToReturn.Select(LastBackupsStatusEntity.ToDomain).ToImmutableList());
     }
   }
 }
