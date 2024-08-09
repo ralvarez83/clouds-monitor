@@ -1,4 +1,4 @@
-# Microservices Backup Application
+# Cloud Monitor Application
 
 Esta aplicación es un proyecto de aprendizaje diseñado para explorar la arquitectura de microservicios. Gestiona y recupera información de backups de máquinas virtuales en Azure utilizando diversos componentes y tecnologías.
 
