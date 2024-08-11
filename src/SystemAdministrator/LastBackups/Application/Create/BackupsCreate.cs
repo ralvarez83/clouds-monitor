@@ -9,9 +9,9 @@ using SystemAdministrator.LastBackups.Domain;
 
 namespace SystemAdministrator.LastBackups.Application.AddNewBackups
 {
-  public class BackupsCreate(BackupsRepository commandRepository, QueryBus queryBus)
+  public class BackupsCreate(LastBackupsRepository commandRepository, QueryBus queryBus)
   {
-    private readonly BackupsRepository _commandRepository = commandRepository;
+    private readonly LastBackupsRepository _commandRepository = commandRepository;
     private readonly QueryBus _queryBus = queryBus;
 
     public async void Run()

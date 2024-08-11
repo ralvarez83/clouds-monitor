@@ -1,7 +1,7 @@
 using System.Globalization;
 using Shared.Domain.ValueObjects;
 
-namespace Clouds.LastBackups.Domain.ValueObjects;
+namespace Shared.Domain.ValueObjects;
 
 public class BackupDate : SimpleDate
 {

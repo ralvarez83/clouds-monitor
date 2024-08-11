@@ -1,6 +1,6 @@
 using Shared.Domain.ValueObjects;
 
-namespace Clouds.LastBackups.Domain.ValueObjects
+namespace Shared.Domain.ValueObjects
 {
   public class VaultId(string value) : ValueObjectsBase
   {
