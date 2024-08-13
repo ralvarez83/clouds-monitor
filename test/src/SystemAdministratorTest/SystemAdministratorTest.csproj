@@ -26,6 +26,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\SystemAdministrator\SystemAdministrator.csproj" />
+    <ProjectReference Include="..\SharedTest\SharedTest.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update=".\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

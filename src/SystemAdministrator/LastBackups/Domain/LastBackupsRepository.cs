@@ -9,6 +9,6 @@ public interface LastBackupsRepository
   public void Save(Backup backup);
 
   public Task<Backup?> GetById(MachineId id);
-  public Task<ImmutableList<Backup>> SearchByCriteria(Criteria criteria);
+  public Task<ImmutableList<Backup>> Search(Criteria criteria);
 
 }
