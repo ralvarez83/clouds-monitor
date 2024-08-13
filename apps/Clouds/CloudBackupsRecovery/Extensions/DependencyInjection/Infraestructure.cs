@@ -1,11 +1,9 @@
 using Azure.Core;
-using Azure.Core.Diagnostics;
 using Azure.Identity;
 using Azure.ResourceManager;
 using Clouds.LastBackups.Domain;
 using Clouds.LastBackups.Infraestructure.Azure;
 using Clouds.LastBackups.Infraestructure.Bus.Command.MediatR;
-using Clouds.LastBackups.Infraestructure.Bus.Command.MediatR.UpdateLastBackups;
 using Clouds.LastBackups.Infraestructure.Bus.MediatR.GetCloudLast;
 using Clouds.LastBackups.Infraestructure.Bus.Query.MediatR;
 using Clouds.LastBackups.Infraestructure.Bus.RabbitMQ;
@@ -21,6 +19,7 @@ using Shared.Domain.Bus.Query;
 using Shared.Infraestructure.Bus.Command.MediatR;
 using Shared.Infraestructure.Bus.Event.RabbitMQ;
 using Shared.Infraestructure.Bus.Query.MediatR;
+using Shared.Infraestructure.Repository.MongoDB;
 
 namespace CloudBackupsRecovery.Extensions.DependencyInjection
 {

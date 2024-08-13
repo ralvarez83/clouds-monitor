@@ -8,7 +8,7 @@ using Shared.Domain.ValueObjects;
 
 namespace CloudsTest.LastBackups.Infrastructure.MongoDB
 {
-  public class SearchBackupByCriteriaShould : MongoDBUnitCase
+  public class SearchBackupByCriteriaShould : CloudMongoDBUnitCase
   {
     [Fact]
     public async void EmptyReturn_When_DatabaseIsEmpty()

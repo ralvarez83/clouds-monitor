@@ -1,15 +1,16 @@
-using Clouds.LastBackups.Infraestructure.Repository.MongoDB;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
+using Shared.Infraestructure.Repository.MongoDB;
 using SharedTest.Infrastructure;
 
-namespace CloudsTest.LastBackups.Infrastructure.MongoDB
+namespace Shared.Infrastructure.MongoDB
 {
-  public class MongoDBUnitCase : InfrastructureTestCase, IDisposable
+  public abstract class MongoDBUnitCase<TContext> : InfrastructureTestCase, IDisposable where TContext : DbContext
   {
-    private MongoDBSettings mongoDBSettings;
+    protected MongoDBSettings mongoDBSettings;
 
-    private string dataBaseName;
+    protected string dataBaseName;
 
     public MongoDBUnitCase() : base()
     {
@@ -22,11 +23,7 @@ namespace CloudsTest.LastBackups.Infrastructure.MongoDB
       client.DropDatabase(dataBaseName);
     }
 
-    protected LastBackupsStatusContext GetTemporalDBContext()
-    {
-      var client = new MongoClient(mongoDBSettings.MongoDBURI);
-      return LastBackupsStatusContext.Create(client.GetDatabase(dataBaseName)); ;
-    }
+    protected abstract TContext GetTemporalDBContext();
 
     protected override Action<IServiceCollection> GetServices()
     {

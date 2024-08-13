@@ -1,4 +1,4 @@
-namespace Clouds.LastBackups.Infraestructure.Repository.MongoDB
+namespace Shared.Infraestructure.Repository.MongoDB
 {
   public record MongoDBSettings(string MongoDBURI, string DatabaseName)
   {

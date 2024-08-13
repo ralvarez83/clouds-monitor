@@ -5,7 +5,7 @@ using Shared.Domain.ValueObjects;
 
 namespace CloudsTest.LastBackups.Infrastructure.MongoDB
 {
-  public class SaveBackupShould : MongoDBUnitCase
+  public class SaveBackupShould : CloudMongoDBUnitCase
   {
 
     [Fact]
