@@ -83,6 +83,37 @@ namespace SystemAdministrationTest.LastBackup.Application
       ShouldHaveSaveWithBackupData(BackupWrapper.FromDto(backupWithNewData));
     }
 
+    [Fact]
+    public void MachineLastBackupNullIsUpdate()
+    {
+      // Given the machine existis but hasn't LastBackupRecovery
+      ImmutableList<Backup> backupsInRepository = BackupsFactory.BuildArrayOfBackupsRandom();
+      backupsInRepository.First().LastRecoveryPoint = null;
+      ConfigureGetRepositoryGetById(backupsInRepository);
+
+      // When save a new backupData with LastBackupRecovery
+
+      BackupDto backupDto = BackupDtoWrapper.FromDomain(backupsInRepository.First());
+      DateTime newBackupDate = backupDto.backupTime.HasValue ? backupDto.backupTime.Value.AddDays(1) : DateTime.Now;
+
+      BackupDto backupWithNewData = new BackupDto(
+                                                  backupDto.machineId,
+                                                  backupDto.machineName,
+                                                  backupDto.status,
+                                                  newBackupDate,
+                                                  backupDto.backupType,
+                                                  newBackupDate,
+                                                  backupDto.vaultId,
+                                                  backupDto.suscriptionId,
+                                                  backupDto.TenantId);
+
+      RegisterBackupCommand command = new RegisterBackupCommand(backupWithNewData);
+      _handler.Handle(command);
+
+      // Then the machine is updated
+      ShouldHaveSaveWithBackupData(BackupWrapper.FromDto(backupWithNewData));
+    }
+
     private void ConfigureGetRepositoryGetById(ImmutableList<Backup> backupsInRepository)
     {
       _repository
