@@ -1,9 +1,6 @@
 using System.Linq.Expressions;
-using Clouds.LastBackups.Application.Dtos;
-using Clouds.LastBackups.Domain;
-using Clouds.LastBackups.Domain.ValueObjects;
-using Clouds.LastBackups.Infraestructure.Repository.MongoDB;
 using Shared.Domain.Criteria.Filters;
+using Shared.Domain.ValueObjects;
 using Shared.Infraestructure.Respository.EntityFramework.Criteria;
 
 namespace Clouds.LastBackups.Infraestructure.Repository.EntityFramework

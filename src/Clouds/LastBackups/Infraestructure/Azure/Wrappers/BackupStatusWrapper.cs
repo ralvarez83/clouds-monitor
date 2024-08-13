@@ -1,4 +1,4 @@
-using BackupStatusDomain = Clouds.LastBackups.Domain.ValueObjects.BackupStatus;
+using BackupStatusDomain = Shared.Domain.ValueObjects.BackupStatus;
 
 namespace Clouds.LastBackups.Infraestructure.Azure.Wrappers
 {

@@ -4,7 +4,7 @@ using Clouds.LastBackups.Infraestructure.Repository.MongoDB;
 using CloudsTest.LastBackups.Domain;
 using CriteriaDomian = Shared.Domain.Criteria.Criteria;
 using Shared.Domain.Criteria.Filters;
-using Clouds.LastBackups.Domain.ValueObjects;
+using Shared.Domain.ValueObjects;
 
 namespace CloudsTest.LastBackups.Infrastructure.MongoDB
 {

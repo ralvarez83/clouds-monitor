@@ -1,7 +1,8 @@
 
 using Azure.ResourceManager.RecoveryServicesBackup;
 using Azure.ResourceManager.RecoveryServicesBackup.Models;
-using Clouds.LastBackups.Domain.ValueObjects;
+using Shared.Domain.ValueObjects;
+using BackupTypeType = Shared.Domain.ValueObjects.BackupType;
 
 namespace Clouds.LastBackups.Infraestructure.Azure.Wrappers
 {
@@ -34,7 +35,7 @@ namespace Clouds.LastBackups.Infraestructure.Azure.Wrappers
       BackupStatus backupStatus = BackupStatusWrapper.FromString(backupData.LastBackupStatus);
       BackupDate? backupTime = backupData.LastBackupOn.HasValue ? new BackupDate(backupData.LastBackupOn.Value) : null;
       BackupDate? lastRecovery = backupData.LastRecoverOn.HasValue ? new BackupDate(backupData.LastRecoverOn.Value) : null;
-      Domain.ValueObjects.BackupType backupType = BackupTypeWrapper.FromSourceType(backupData.WorkloadType);
+      BackupTypeType backupType = BackupTypeWrapper.FromSourceType(backupData.WorkloadType);
       VaultId vaultId = new VaultId(item.VaultId);
       SuscriptionId suscriptionId = new SuscriptionId(itemSuscriptionId);
       TenantId tenantId = new TenantId(itemTenantId);

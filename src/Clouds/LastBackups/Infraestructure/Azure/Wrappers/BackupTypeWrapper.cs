@@ -1,5 +1,5 @@
 using Azure.ResourceManager.RecoveryServicesBackup.Models;
-using BackupTypeDomain = Clouds.LastBackups.Domain.ValueObjects.BackupType;
+using BackupTypeDomain = Shared.Domain.ValueObjects.BackupType;
 
 namespace Clouds.LastBackups.Infraestructure.Azure.Wrappers
 {

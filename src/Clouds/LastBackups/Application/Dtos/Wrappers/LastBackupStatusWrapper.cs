@@ -1,5 +1,5 @@
 using Shared.Domain.Dtos;
-using Clouds.LastBackups.Domain.ValueObjects;
+using Shared.Domain.ValueObjects;
 
 namespace Clouds.LastBackups.Application.Dtos.Wrappers;
 

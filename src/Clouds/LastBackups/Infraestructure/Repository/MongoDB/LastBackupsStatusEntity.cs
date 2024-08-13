@@ -1,7 +1,7 @@
 using Clouds.LastBackups.Domain;
-using Clouds.LastBackups.Domain.ValueObjects;
 using Clouds.LastBackups.Infraestructure.Repository.EntityFramework;
-using BackupTypeType = Clouds.LastBackups.Domain.ValueObjects.BackupType;
+using Shared.Domain.ValueObjects;
+using BackupTypeType = Shared.Domain.ValueObjects.BackupType;
 
 namespace Clouds.LastBackups.Infraestructure.Repository.MongoDB
 {
@@ -25,9 +25,9 @@ namespace Clouds.LastBackups.Infraestructure.Repository.MongoDB
         Id = lastBackupsStatus.MachineId.Value,
         MachineName = lastBackupsStatus.MachineName.Value,
         Status = lastBackupsStatus.Status.ToString(),
-        BackupTime = lastBackupsStatus.BackupTime.Value,
+        BackupTime = null != lastBackupsStatus.BackupTime ? lastBackupsStatus.BackupTime.Value : null,
         BackupType = lastBackupsStatus.BackupType.ToString(),
-        LastRecoveryPoint = lastBackupsStatus.LastRecoveryPoint.Value,
+        LastRecoveryPoint = null != lastBackupsStatus.LastRecoveryPoint ? lastBackupsStatus.LastRecoveryPoint.Value : null,
         VaultId = lastBackupsStatus.VaultId.Value,
         SuscriptionId = lastBackupsStatus.SuscriptionId.Value,
         TenantId = lastBackupsStatus.TenantId.Value

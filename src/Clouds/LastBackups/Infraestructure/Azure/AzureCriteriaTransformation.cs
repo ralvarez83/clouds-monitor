@@ -1,6 +1,5 @@
-using Clouds.LastBackups.Domain.ValueObjects;
 using Shared.Domain.Criteria;
-using Shared.Domain.Criteria.Filters;
+using Shared.Domain.ValueObjects;
 
 namespace Clouds.LastBackups.Infraestructure.Azure
 {

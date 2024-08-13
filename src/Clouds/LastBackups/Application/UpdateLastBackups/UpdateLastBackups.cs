@@ -3,11 +3,11 @@ using Clouds.LastBackups.Application.Dtos;
 using Clouds.LastBackups.Application.Dtos.Wrappers;
 using Clouds.LastBackups.Application.GetCloudLast;
 using Clouds.LastBackups.Domain;
-using Clouds.LastBackups.Domain.ValueObjects;
 using Shared.Domain.Bus.Event;
 using Shared.Domain.Bus.Query;
 using Shared.Domain.Criteria;
 using Shared.Domain.Criteria.Filters;
+using Shared.Domain.ValueObjects;
 
 namespace Clouds.LastBackups.Application.UpdateLastBackups
 {
