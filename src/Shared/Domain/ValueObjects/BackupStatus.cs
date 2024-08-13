@@ -35,5 +35,9 @@ public class BackupStatus : ValueObjectsBase
     return _value ?? string.Empty;
   }
 
+  public BackupStatus Copy()
+  {
+    return new BackupStatus(_value);
+  }
   public static string GetName() => "BackupStatus";
 }

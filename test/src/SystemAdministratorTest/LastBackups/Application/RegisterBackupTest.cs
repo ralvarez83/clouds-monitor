@@ -4,6 +4,7 @@ using Shared.Domain.ValueObjects;
 using SystemAdministrationTest.Backups.Domain;
 using SystemAdministrationTest.LastBackups.Infrastructure;
 using SystemAdministrator.LastBackups.Application.Dtos;
+using SystemAdministrator.LastBackups.Application.Dtos.Wrappers;
 using SystemAdministrator.LastBackups.Application.Register;
 using SystemAdministrator.LastBackups.Domain;
 
@@ -33,6 +34,22 @@ namespace SystemAdministrationTest.LastBackup.Application
 
       // Then the save repository method must be callled
       ShouldHaveSave(1);
+    }
+
+    [Fact]
+    public void MachineIsNotUpdateWithSameBackupData()
+    {
+      // Given the machine exists in repository and backup data is update
+      ImmutableList<Backup> backupsInRepository = BackupsFactory.BuildArrayOfBackupsRandom();
+      ConfigureGetRepositoryGetById(backupsInRepository);
+
+      // When backup wants to be register with no new data
+      BackupDto backupWithNoNewData = BackupDtoWrapper.FromDomain(backupsInRepository.First());
+      RegisterBackupCommand command = new RegisterBackupCommand(backupWithNoNewData);
+      _handler.Handle(command);
+
+      // Then the manchine is not updated
+      ShouldHaveSave(0);
     }
 
 

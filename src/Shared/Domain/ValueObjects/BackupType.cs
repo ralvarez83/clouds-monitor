@@ -31,6 +31,11 @@ namespace Shared.Domain.ValueObjects
       return _value ?? string.Empty;
     }
 
+    public BackupType Copy()
+    {
+      return new BackupType(_value);
+    }
+
     public static string GetName() => "BackupType";
   }
 }
