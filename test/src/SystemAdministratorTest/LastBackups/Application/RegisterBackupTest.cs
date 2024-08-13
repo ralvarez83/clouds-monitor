@@ -53,7 +53,35 @@ namespace SystemAdministrationTest.LastBackup.Application
     }
 
 
+    [Fact]
+    public void MachineIsUpdateWithNewBackup()
+    {
+      // Given the machine exists in repository but backup data is older
+      ImmutableList<Backup> backupsInRepository = BackupsFactory.BuildArrayOfBackupsRandom();
+      ConfigureGetRepositoryGetById(backupsInRepository);
 
+      // When a new backup is register
+
+      BackupDto backupDto = BackupDtoWrapper.FromDomain(backupsInRepository.First());
+      DateTime newBackupDate = backupDto.backupTime.HasValue ? backupDto.backupTime.Value.AddDays(1) : DateTime.Now;
+
+      BackupDto backupWithNewData = new BackupDto(
+                                                  backupDto.machineId,
+                                                  backupDto.machineName,
+                                                  backupDto.status,
+                                                  newBackupDate,
+                                                  backupDto.backupType,
+                                                  backupDto.lastRecoveryPoint,
+                                                  backupDto.vaultId,
+                                                  backupDto.suscriptionId,
+                                                  backupDto.TenantId);
+
+      RegisterBackupCommand command = new RegisterBackupCommand(backupWithNewData);
+      _handler.Handle(command);
+
+      // Then machine backup data is update
+      ShouldHaveSaveWithBackupData(BackupWrapper.FromDto(backupWithNewData));
+    }
 
     private void ConfigureGetRepositoryGetById(ImmutableList<Backup> backupsInRepository)
     {

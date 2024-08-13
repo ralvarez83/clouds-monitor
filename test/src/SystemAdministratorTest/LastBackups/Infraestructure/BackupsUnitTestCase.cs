@@ -38,5 +38,21 @@ namespace SystemAdministrationTest.LastBackups.Infrastructure
         _repository.Verify(_ => _.Save(It.IsAny<Backup>()), Times.AtLeastOnce());
       }
     }
+    public void ShouldHaveSaveWithBackupData(Backup backupSaved)
+    {
+
+      _repository.Verify(_ => _.Save(It.Is<Backup>(
+        (backup) => backup.MachineId.Value == backupSaved.MachineId.Value &&
+                    backup.MachineName.Value == backupSaved.MachineName.Value &&
+                    backup.BackupTime.Value.ToString() == backupSaved.BackupTime.Value.ToString() &&
+                    backup.BackupType.Equals(backup.BackupType) &&
+                    backup.Status.Equals(backupSaved.Status) &&
+                    backup.LastRecoveryPoint.Value.ToString() == backupSaved.LastRecoveryPoint.Value.ToString() &&
+                    backup.VaultId.Value == backupSaved.VaultId.Value &&
+                    backup.SuscriptionId.Value == backupSaved.SuscriptionId.Value &&
+                    backup.TenantId.Value == backupSaved.TenantId.Value
+      )), Times.Exactly(1));
+
+    }
   }
 }

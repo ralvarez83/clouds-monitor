@@ -34,6 +34,10 @@ public class BackupStatus : ValueObjectsBase
   {
     return _value ?? string.Empty;
   }
+  public bool Equals(BackupStatus? type)
+  {
+    return null != type && type._value == this._value;
+  }
 
   public BackupStatus Copy()
   {

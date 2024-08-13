@@ -31,6 +31,11 @@ namespace Shared.Domain.ValueObjects
       return _value ?? string.Empty;
     }
 
+    public bool Equals(BackupType? type)
+    {
+      return null != type && type._value == this._value;
+    }
+
     public BackupType Copy()
     {
       return new BackupType(_value);
