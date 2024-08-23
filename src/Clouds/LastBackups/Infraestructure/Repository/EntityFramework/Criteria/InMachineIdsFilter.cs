@@ -1,7 +1,8 @@
 using System.Linq.Expressions;
 using Shared.Domain.Criteria.Filters;
 using Shared.Domain.ValueObjects;
-using Shared.Infraestructure.Respository.EntityFramework.Criteria;
+using Shared.Infrastructure.Repository.EntityFramework;
+using Shared.Infrastructure.Respository.EntityFramework.Criteria;
 
 namespace Clouds.LastBackups.Infraestructure.Repository.EntityFramework
 {

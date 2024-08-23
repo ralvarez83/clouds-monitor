@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using Shared.Domain.Bus.Event;
-using Shared.Infraestructure.Bus.Event.RabbitMQ;
+using Shared.Infrastructure.Bus.Event.RabbitMQ;
 
 namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
 {

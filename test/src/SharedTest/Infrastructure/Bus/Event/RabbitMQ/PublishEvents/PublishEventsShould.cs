@@ -5,8 +5,8 @@ using Clouds.LastBackups.Infraestructure.Bus.RabbitMQ;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Shared.Domain.Bus.Event;
-using Shared.Infraestructure.Bus.Event;
-using Shared.Infraestructure.Bus.Event.RabbitMQ;
+using Shared.Infrastructure.Bus.Event;
+using Shared.Infrastructure.Bus.Event.RabbitMQ;
 using SharedTest.Domain;
 
 namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ

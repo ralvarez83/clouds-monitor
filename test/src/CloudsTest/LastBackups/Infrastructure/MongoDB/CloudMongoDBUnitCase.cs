@@ -1,10 +1,7 @@
 using Clouds.LastBackups.Infraestructure.Repository.MongoDB;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
-using Shared.Infraestructure.Repository.MongoDB;
 using Shared.Infrastructure.MongoDB;
-using SharedTest.Infrastructure;
 
 namespace CloudsTest.LastBackups.Infrastructure.MongoDB
 {

@@ -1,11 +1,11 @@
-using Clouds.LastBackups.Domain;
 using Shared.Domain.ValueObjects;
 using Shared.Infrastructure.Repository.EntityFramework;
+using SystemAdministrator.LastBackups.Domain;
 using BackupTypeType = Shared.Domain.ValueObjects.BackupType;
 
-namespace Clouds.LastBackups.Infraestructure.Repository.MongoDB
+namespace SystemAdministrator.LastBackups.Infrastructure.Repository.MongoDB
 {
-  public class LastBackupsStatusEntity : Entity
+  public class BackupsEntity : Entity
   {
 
     public string Id { get; set; } = string.Empty;
@@ -18,25 +18,25 @@ namespace Clouds.LastBackups.Infraestructure.Repository.MongoDB
     public string SuscriptionId { get; set; } = string.Empty;
     public string TenantId { get; set; } = string.Empty;
 
-    public static LastBackupsStatusEntity FromDomain(LastBackupStatus lastBackupsStatus)
+    public static BackupsEntity FromDomain(Backup backup)
     {
-      return new LastBackupsStatusEntity
+      return new BackupsEntity
       {
-        Id = lastBackupsStatus.MachineId.Value,
-        MachineName = lastBackupsStatus.MachineName.Value,
-        Status = lastBackupsStatus.Status.ToString(),
-        BackupTime = null != lastBackupsStatus.BackupTime ? lastBackupsStatus.BackupTime.Value : null,
-        BackupType = lastBackupsStatus.BackupType.ToString(),
-        LastRecoveryPoint = null != lastBackupsStatus.LastRecoveryPoint ? lastBackupsStatus.LastRecoveryPoint.Value : null,
-        VaultId = lastBackupsStatus.VaultId.Value,
-        SuscriptionId = lastBackupsStatus.SuscriptionId.Value,
-        TenantId = lastBackupsStatus.TenantId.Value
+        Id = backup.MachineId.Value,
+        MachineName = backup.MachineName.Value,
+        Status = backup.Status.ToString(),
+        BackupTime = null != backup.BackupTime ? backup.BackupTime.Value : null,
+        BackupType = backup.BackupType.ToString(),
+        LastRecoveryPoint = null != backup.LastRecoveryPoint ? backup.LastRecoveryPoint.Value : null,
+        VaultId = backup.VaultId.Value,
+        SuscriptionId = backup.SuscriptionId.Value,
+        TenantId = backup.TenantId.Value
       };
     }
 
-    public static LastBackupStatus ToDomain(LastBackupsStatusEntity entity)
+    public static Backup ToDomain(BackupsEntity entity)
     {
-      return new LastBackupStatus(
+      return new Backup(
         machineId: new(entity.Id),
         new(entity.MachineName),
         BackupStatus.Parse(entity.Status),

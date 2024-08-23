@@ -16,10 +16,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Shared.Domain.Bus.Command;
 using Shared.Domain.Bus.Event;
 using Shared.Domain.Bus.Query;
-using Shared.Infraestructure.Bus.Command.MediatR;
-using Shared.Infraestructure.Bus.Event.RabbitMQ;
-using Shared.Infraestructure.Bus.Query.MediatR;
-using Shared.Infraestructure.Repository.MongoDB;
+using Shared.Infrastructure.Bus.Command.MediatR;
+using Shared.Infrastructure.Bus.Event.RabbitMQ;
+using Shared.Infrastructure.Bus.Query.MediatR;
+using Shared.Infrastructure.Repository.MongoDB;
 
 namespace CloudBackupsRecovery.Extensions.DependencyInjection
 {

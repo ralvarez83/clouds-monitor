@@ -1,6 +1,6 @@
 using MediatR;
 using Shared.Domain.Bus.Query;
-using Shared.Infraestructure.Bus.Query.MediatR;
+using Shared.Infrastructure.Bus.Query.MediatR;
 
 namespace WebAPI.Extensions.DependencyInjection
 {

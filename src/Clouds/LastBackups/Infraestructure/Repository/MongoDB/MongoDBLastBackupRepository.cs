@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 using Clouds.LastBackups.Domain;
 using Clouds.LastBackups.Infraestructure.Repository.EntityFramework;
 using MongoDB.Driver.Linq;
-using Shared.Infraestructure.Respository.EntityFramework.Criteria;
+using Shared.Infrastructure.Respository.EntityFramework.Criteria;
 using CriteriaDomain = Shared.Domain.Criteria.Criteria;
 
 namespace Clouds.LastBackups.Infraestructure.Repository.MongoDB

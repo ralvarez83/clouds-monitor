@@ -1,7 +1,7 @@
 using System.Collections.Immutable;
-using Clouds.LastBackups.Infraestructure.Repository.MongoDB;
 using Shared.Domain.Criteria.Filters;
-using Shared.Infraestructure.Respository.EntityFramework.Criteria;
+using Shared.Infrastructure.Repository.EntityFramework;
+using Shared.Infrastructure.Respository.EntityFramework.Criteria;
 
 namespace Clouds.LastBackups.Infraestructure.Repository.EntityFramework
 {

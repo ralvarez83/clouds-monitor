@@ -1,7 +1,7 @@
 using Clouds.LastBackups.Application.GetCloudLast;
 using Clouds.LastBackups.Infraestructure.Bus.MediatR.GetCloudLast;
 using MediatR;
-using Shared.Infraestructure.Bus.Query.MediatR;
+using Shared.Infrastructure.Bus.Query.MediatR;
 
 namespace Clouds.LastBackups.Infraestructure.Bus.Query.MediatR
 {

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
-using Shared.Infraestructure.Repository.MongoDB;
+using Shared.Infrastructure.Repository.MongoDB;
 using SharedTest.Infrastructure;
 
 namespace Shared.Infrastructure.MongoDB

@@ -3,9 +3,9 @@ using SystemAdministrator.LastBackups.Domain;
 
 namespace SystemAdministrator.LastBackups.Application.Register
 {
-  public class RegisterBackup(LastBackupsRepository repository)
+  public class RegisterBackup(BackupsRepository repository)
   {
-    private readonly LastBackupsRepository repository = repository;
+    private readonly BackupsRepository repository = repository;
 
     public async void Register(Backup newBackup)
     {

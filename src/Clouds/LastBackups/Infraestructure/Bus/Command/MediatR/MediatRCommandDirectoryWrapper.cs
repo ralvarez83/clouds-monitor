@@ -1,7 +1,7 @@
 using Clouds.LastBackups.Application.UpdateLastBackups;
 using Clouds.LastBackups.Infraestructure.Bus.Command.MediatR.UpdateLastBackups;
 using MediatR;
-using Shared.Infraestructure.Bus.Command.MediatR;
+using Shared.Infrastructure.Bus.Command.MediatR;
 
 namespace Clouds.LastBackups.Infraestructure.Bus.Command.MediatR
 {
