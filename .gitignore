@@ -16,9 +16,6 @@ mongo-data/
 # RabbitMQ data docker
 dockers/*/rabbitmq/
 
-#VS Code configuration
-.vscode/
-
 # User-specific files
 *.rsuser
 *.suo
