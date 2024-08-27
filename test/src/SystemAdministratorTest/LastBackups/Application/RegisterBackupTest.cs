@@ -12,12 +12,9 @@ namespace SystemAdministrationTest.LastBackup.Application
 {
   public class RegisterBackupTest : BackupsUnitTestCase
   {
-
-    private RegisterBackupHandler _handler;
     private RegisterBackupSubscriber _subscriber;
     public RegisterBackupTest()
     {
-      _handler = new RegisterBackupHandler(new RegisterBackup(_repository.Object));
       _subscriber = new RegisterBackupSubscriber(new RegisterBackup(_repository.Object));
     }
 
