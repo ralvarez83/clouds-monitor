@@ -25,6 +25,8 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
 
         RabbitMQSettings? rabbitMQSettings = configuration.GetSection(RabbitMQSettings.Name).Get<RabbitMQSettings>();
         int postNames = TimeSpan.FromTicks(DateTime.Now.Ticks).Milliseconds;
+        if (null == rabbitMQSettings)
+          throw new Exception("RabbitMQSettings not found");
 
         rabbitMQSettings.Exchange = new Exchanges(
           rabbitMQSettings.Exchange.Name + postNames,

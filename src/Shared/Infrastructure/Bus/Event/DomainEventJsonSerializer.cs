@@ -7,7 +7,7 @@ namespace Shared.Infrastructure.Bus.Event
 {
     public static class DomainEventJsonSerializer
     {
-        public static string Serialize(DomainEvent domainEvent)
+        public static string Serialize(DomainEventPublisher domainEvent)
         {
             if (domainEvent == null) return "";
 

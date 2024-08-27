@@ -1,17 +1,16 @@
-using Shared.Domain.Bus.Command;
+using Shared.Domain.Bus.Event;
 using SystemAdministrator.LastBackups.Application.Dtos.Wrappers;
 using SystemAdministrator.LastBackups.Domain;
 
 namespace SystemAdministrator.LastBackups.Application.Register
 {
-  public class RegisterBackupHandler(RegisterBackup registerBackup) : CommandHandler<RegisterBackupCommand>
+  public class RegisterBackupSubscriber(RegisterBackup registerBackup) : Subscriber
   {
     private readonly RegisterBackup registerBackup = registerBackup;
-
-    public Task Handle(RegisterBackupCommand command)
+    public Task On(DomainEvent domainEvent)
     {
-      Machine backup = MachineWrapper.FromDto(command.Backup);
-      registerBackup.Register(backup);
+      Machine machine = MachineWrapper.FromDomainEntity((MachineDomainEvent)domainEvent);
+      registerBackup.Register(machine);
 
       return Task.CompletedTask;
     }

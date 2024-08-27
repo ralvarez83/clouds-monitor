@@ -3,22 +3,22 @@ using SystemAdministrator.LastBackups.Domain;
 
 namespace SystemAdministrator.LastBackups.Application.Register
 {
-  public class RegisterBackup(BackupsRepository repository)
+  public class RegisterBackup(LastBackupsRepository repository)
   {
-    private readonly BackupsRepository repository = repository;
+    private readonly LastBackupsRepository repository = repository;
 
-    public async void Register(Backup newBackup)
+    public async void Register(Machine newBackup)
     {
-      Backup? backup = await this.repository.GetById(newBackup.MachineId);
+      Machine? backup = await this.repository.GetById(newBackup.MachineId);
 
       if (null != backup)
       {
-        if ((null == backup.BackupTime && null != newBackup.BackupTime) ||
-            (null != backup.BackupTime && null != newBackup.BackupTime && backup.BackupTime.Value.CompareTo(newBackup.BackupTime.Value) < 0))
+        if ((null == backup.LastBackupTime && null != newBackup.LastBackupTime) ||
+            (null != backup.LastBackupTime && null != newBackup.LastBackupTime && backup.LastBackupTime.Value.CompareTo(newBackup.LastBackupTime.Value) < 0))
         {
-          backup.BackupTime = new BackupDate(newBackup.BackupTime.Value);
-          backup.BackupType = newBackup.BackupType.Copy();
-          backup.Status = newBackup.Status.Copy();
+          backup.LastBackupTime = new BackupDate(newBackup.LastBackupTime.Value);
+          backup.LastBackupType = newBackup.LastBackupType.Copy();
+          backup.LastBackupStatus = newBackup.LastBackupStatus.Copy();
           if (null != newBackup.LastRecoveryPoint)
             backup.LastRecoveryPoint = new BackupDate(newBackup.LastRecoveryPoint.Value);
 

@@ -3,7 +3,7 @@ using Shared.Domain.ValueObjects;
 
 namespace SharedTest.Domain
 {
-  public class DomainEventFake : DomainEvent
+  public class DomainEventFake : DomainEventPublisher
   {
 
     public DomainEventFake(string id, string name, SimpleDate date, string? eventId, SimpleDate? occurredOn) : base(id, eventId, occurredOn)

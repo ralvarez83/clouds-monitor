@@ -7,30 +7,30 @@ using Shared.Domain.ValueObjects;
 
 namespace SystemAdministrationTest.Backups.Infraestructure.InMemoryDB
 {
-    public class InMemoryBackupsRepository(ApplicationDbContext appDBContext) : BackupsRepository
+    public class InMemoryBackupsRepository(ApplicationDbContext appDBContext) : LastBackupsRepository
     {
         private ApplicationDbContext _appDBContext = appDBContext;
 
-        public Task<Backup?> GetById(MachineId id)
+        public Task<Machine?> GetById(MachineId id)
         {
             throw new NotImplementedException();
         }
 
-        public void Save(Backup backup)
+        public void Save(Machine backup)
         {
-            BackupDto backupDto = BackupDtoWrapper.FromDomain(backup);
+            BackupDto backupDto = MachineDtoWrapper.FromDomain(backup);
             _appDBContext.Add(backupDto);
             _appDBContext.SaveChanges();
         }
 
-        public Task<ImmutableList<Backup>> Search(Criteria criteria)
+        public Task<ImmutableList<Machine>> Search(Criteria criteria)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ImmutableList<Backup>> SearchByCriteria(Criteria criteria)
+        public async Task<ImmutableList<Machine>> SearchByCriteria(Criteria criteria)
         {
-            return await Task.Run(() => { return _appDBContext.Backups.Select(BackupWrapper.FromDto).ToImmutableList(); });
+            return await Task.Run(() => { return _appDBContext.Backups.Select(MachineWrapper.FromDto).ToImmutableList(); });
         }
     }
 }

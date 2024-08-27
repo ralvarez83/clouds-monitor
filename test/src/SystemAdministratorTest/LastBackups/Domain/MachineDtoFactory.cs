@@ -4,11 +4,11 @@ using SystemAdministrator.LastBackups.Application.Dtos.Wrappers;
 
 namespace SystemAdministrationTest.Backups.Domain;
 
-public class BackupsDtoFactory
+public class MachineDtoFactory
 {
   public static ImmutableList<BackupDto> BuildArrayOfBackupDtosRandom()
   {
-    return BackupsFactory.BuildArrayOfBackupsRandom().Select(BackupDtoWrapper.FromDomain).ToImmutableList();
+    return MachineFactory.BuildArrayOfBackupsRandom().Select(MachineDtoWrapper.FromDomain).ToImmutableList();
   }
 
   public static ImmutableList<BackupDto> BuildArrayOfBackupDtosEmpty()
@@ -18,6 +18,6 @@ public class BackupsDtoFactory
 
   public static BackupDto BuildBackupDtoRandom()
   {
-    return BackupDtoWrapper.FromDomain(BackupsFactory.BuildBackupRandom());
+    return MachineDtoWrapper.FromDomain(MachineFactory.BuildBackupRandom());
   }
 }

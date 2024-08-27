@@ -18,15 +18,15 @@ namespace SystemAdministrator.LastBackups.Infrastructure.Repository.MongoDB
     public string SuscriptionId { get; set; } = string.Empty;
     public string TenantId { get; set; } = string.Empty;
 
-    public static BackupsEntity FromDomain(Backup backup)
+    public static BackupsEntity FromDomain(Machine backup)
     {
       return new BackupsEntity
       {
         Id = backup.MachineId.Value,
         MachineName = backup.MachineName.Value,
-        Status = backup.Status.ToString(),
-        BackupTime = null != backup.BackupTime ? backup.BackupTime.Value : null,
-        BackupType = backup.BackupType.ToString(),
+        Status = backup.LastBackupStatus.ToString(),
+        BackupTime = null != backup.LastBackupTime ? backup.LastBackupTime.Value : null,
+        BackupType = backup.LastBackupType.ToString(),
         LastRecoveryPoint = null != backup.LastRecoveryPoint ? backup.LastRecoveryPoint.Value : null,
         VaultId = backup.VaultId.Value,
         SuscriptionId = backup.SuscriptionId.Value,
@@ -34,9 +34,9 @@ namespace SystemAdministrator.LastBackups.Infrastructure.Repository.MongoDB
       };
     }
 
-    public static Backup ToDomain(BackupsEntity entity)
+    public static Machine ToDomain(BackupsEntity entity)
     {
-      return new Backup(
+      return new Machine(
         machineId: new(entity.Id),
         new(entity.MachineName),
         BackupStatus.Parse(entity.Status),

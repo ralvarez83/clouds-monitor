@@ -1,12 +1,13 @@
+using Shared.Domain.Aggregate;
 using Shared.Domain.ValueObjects;
 
 namespace SystemAdministrator.LastBackups.Domain;
 
-public class Backup(MachineId machineId,
+public class Machine(MachineId machineId,
                               MachineName machineName,
-                              BackupStatus status,
-                              BackupDate? backupTime,
-                              BackupType backupType,
+                              BackupStatus lastBackupStatus,
+                              BackupDate? lastBackupTime,
+                              BackupType lastBackupType,
                               BackupDate? lastRecoveryPoint,
                               VaultId vaultId,
                               SuscriptionId suscriptionId,
@@ -14,9 +15,9 @@ public class Backup(MachineId machineId,
 {
   public MachineId MachineId { get; } = machineId;
   public MachineName MachineName { get; set; } = machineName;
-  public BackupStatus Status { get; set; } = status;
-  public BackupDate? BackupTime { get; set; } = backupTime;
-  public BackupType BackupType { get; set; } = backupType;
+  public BackupStatus LastBackupStatus { get; set; } = lastBackupStatus;
+  public BackupDate? LastBackupTime { get; set; } = lastBackupTime;
+  public BackupType LastBackupType { get; set; } = lastBackupType;
   public BackupDate? LastRecoveryPoint { get; set; } = lastRecoveryPoint;
   public VaultId VaultId { get; } = vaultId;
   public SuscriptionId SuscriptionId { get; } = suscriptionId;

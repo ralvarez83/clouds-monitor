@@ -4,19 +4,19 @@ using SystemAdministrator.LastBackups.Domain;
 
 namespace SystemAdministrationTest.Backups.Domain;
 
-public class BackupsFactory
+public class MachineFactory
 {
-  public static ImmutableList<Backup> BuildArrayOfBackupsRandom()
+  public static ImmutableList<Machine> BuildArrayOfBackupsRandom()
   {
     Fixture fixture = new Fixture();
 
-    return fixture.CreateMany<Backup>().ToImmutableList<Backup>();
+    return fixture.CreateMany<Machine>().ToImmutableList<Machine>();
   }
 
-  public static Backup BuildBackupRandom()
+  public static Machine BuildBackupRandom()
   {
     Fixture fixture = new Fixture();
 
-    return fixture.Create<Backup>();
+    return fixture.Create<Machine>();
   }
 }

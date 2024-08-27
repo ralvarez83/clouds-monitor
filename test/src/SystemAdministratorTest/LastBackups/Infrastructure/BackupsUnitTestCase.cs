@@ -8,20 +8,22 @@ namespace SystemAdministrationTest.LastBackups.Infrastructure
 {
   public class BackupsUnitTestCase
   {
-    protected Mock<BackupsRepository> _repository = new Mock<BackupsRepository>();
+    protected Mock<LastBackupsRepository> _repository = new Mock<LastBackupsRepository>();
     protected Mock<QueryBus> _queryBusMok = new Mock<QueryBus>();
     protected Mock<CommandBus> _commandBusMok = new Mock<CommandBus>();
 
     protected Mock<EventBus> _eventBusMok = new Mock<EventBus>();
 
+    protected Mock<Consumer> _consumerMok = new Mock<Consumer>();
+
     public void ShouldHavePublished(int items, int times)
     {
-      _eventBusMok.Verify(x => x.Publish(It.Is<List<DomainEvent>>(list => list.Count == items)), Times.Exactly(times));
+      _eventBusMok.Verify(x => x.Publish(It.Is<List<DomainEventPublisher>>(list => list.Count == items)), Times.Exactly(times));
     }
 
     public void ShouldHaveNotPublished()
     {
-      _eventBusMok.Verify(x => x.Publish(It.IsAny<List<DomainEvent>>()), Times.Never);
+      _eventBusMok.Verify(x => x.Publish(It.IsAny<List<DomainEventPublisher>>()), Times.Never);
     }
 
     public void ShouldHaveSave(int? times = null)
@@ -29,25 +31,25 @@ namespace SystemAdministrationTest.LastBackups.Infrastructure
       if (times.HasValue)
       {
         if (times.Value == 0)
-          _repository.Verify(_ => _.Save(It.IsAny<Backup>()), Times.Never);
+          _repository.Verify(_ => _.Save(It.IsAny<Machine>()), Times.Never);
         else
-          _repository.Verify(_ => _.Save(It.IsAny<Backup>()), Times.Exactly(times.Value));
+          _repository.Verify(_ => _.Save(It.IsAny<Machine>()), Times.Exactly(times.Value));
       }
       else
       {
-        _repository.Verify(_ => _.Save(It.IsAny<Backup>()), Times.AtLeastOnce());
+        _repository.Verify(_ => _.Save(It.IsAny<Machine>()), Times.AtLeastOnce());
       }
     }
-    public void ShouldHaveSaveWithBackupData(Backup backupSaved)
+    public void ShouldHaveSaveWithBackupData(Machine backupSaved)
     {
 
-      _repository.Verify(_ => _.Save(It.Is<Backup>(
+      _repository.Verify(_ => _.Save(It.Is<Machine>(
         (backup) => backup.MachineId.Value == backupSaved.MachineId.Value &&
                     backup.MachineName.Value == backupSaved.MachineName.Value &&
-                    backup.BackupTime.Value.ToString() == backupSaved.BackupTime.Value.ToString() &&
-                    backup.BackupType.Equals(backup.BackupType) &&
-                    backup.Status.Equals(backupSaved.Status) &&
-                    backup.LastRecoveryPoint.Value.ToString() == backupSaved.LastRecoveryPoint.Value.ToString() &&
+                    backup.LastBackupTime.Value.ToString() == backupSaved.LastBackupTime.Value.ToString() &&
+                    backup.LastBackupType.Equals(backup.LastBackupType) &&
+                    backup.LastBackupStatus.Equals(backupSaved.LastBackupStatus) &&
+                    backup.LastRecoveryPoint.Equals(backupSaved.LastRecoveryPoint) &&
                     backup.VaultId.Value == backupSaved.VaultId.Value &&
                     backup.SuscriptionId.Value == backupSaved.SuscriptionId.Value &&
                     backup.TenantId.Value == backupSaved.TenantId.Value

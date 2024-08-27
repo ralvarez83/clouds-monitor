@@ -5,11 +5,11 @@ using SystemAdministrator.LastBackups.Domain;
 
 namespace SystemAdministrator.LastBackups.Infrastructure.Repository.MongoDB
 {
-  public class MongoDBBackupsRepository(BackupsContext backupContext) : BackupsRepository
+  public class MongoDBBackupsRepository(BackupsContext backupContext) : LastBackupsRepository
   {
     private BackupsContext dbContext = backupContext;
 
-    public async Task<Backup?> GetById(MachineId id)
+    public async Task<Machine?> GetById(MachineId id)
     {
       BackupsEntity? entity = await dbContext.Backups.FindAsync(id.Value);
       if (null == entity)
@@ -17,15 +17,15 @@ namespace SystemAdministrator.LastBackups.Infrastructure.Repository.MongoDB
       return BackupsEntity.ToDomain(entity);
     }
 
-    public void Save(Backup backup)
+    public void Save(Machine backup)
     {
       BackupsEntity? backupInDB = dbContext.Backups.Where(backupInDB => backupInDB.Id == backup.MachineId.Value).FirstOrDefault();
 
       if (null != backupInDB)
       {
-        backupInDB.BackupTime = null != backup.BackupTime ? backup.BackupTime.Value : null;
+        backupInDB.BackupTime = null != backup.LastBackupTime ? backup.LastBackupTime.Value : null;
         backupInDB.LastRecoveryPoint = null != backup.LastRecoveryPoint ? backup.LastRecoveryPoint.Value : null;
-        backupInDB.Status = backup.Status.ToString();
+        backupInDB.Status = backup.LastBackupStatus.ToString();
 
         dbContext.Backups.Update(backupInDB);
       }
@@ -43,7 +43,7 @@ namespace SystemAdministrator.LastBackups.Infrastructure.Repository.MongoDB
       }
     }
 
-    public Task<ImmutableList<Backup>> Search(Criteria criteria)
+    public Task<ImmutableList<Machine>> Search(Criteria criteria)
     {
       throw new NotImplementedException();
     }

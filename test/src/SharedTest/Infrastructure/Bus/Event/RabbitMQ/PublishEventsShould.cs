@@ -21,7 +21,7 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
         throw new Exception("El servicio RabbitMQEventBus no encontrado");
 
       // Given event list is empty
-      List<DomainEvent> events = [];
+      List<DomainEventPublisher> events = [];
 
       // When publish events
       rabbitMQEventBus.Publish(events);
@@ -99,5 +99,7 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
       Assert.Equal(messagesShouldReceived, messagesReceibed);
 
     }
+
+
   }
 }

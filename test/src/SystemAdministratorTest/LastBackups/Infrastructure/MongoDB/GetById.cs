@@ -11,8 +11,8 @@ namespace SystemAdministrationTest.LastBackups.Infrastructure.MongoDB
     public async void Get_ExistingBackup()
     {
       // Given database has backups
-      ImmutableList<Backup> backups = BackupsFactory.BuildArrayOfBackupsRandom();
-      Backup backupToFind = backups.First();
+      ImmutableList<Machine> backups = MachineFactory.BuildArrayOfBackupsRandom();
+      Machine backupToFind = backups.First();
 
       using (BackupsContext existingDataContext = GetTemporalDBContext())
       {
@@ -21,7 +21,7 @@ namespace SystemAdministrationTest.LastBackups.Infrastructure.MongoDB
       }
 
       // When look for a existing Machine Id
-      Backup? backupFinded;
+      Machine? backupFinded;
       using (BackupsContext whenBackupContext = GetTemporalDBContext())
       {
         MongoDBBackupsRepository repository = new MongoDBBackupsRepository(whenBackupContext);
@@ -33,9 +33,9 @@ namespace SystemAdministrationTest.LastBackups.Infrastructure.MongoDB
       {
         Assert.NotNull(backupFinded);
         Assert.Equal(backupFinded.MachineId.Value, backupToFind.MachineId.Value);
-        Assert.NotNull(backupFinded.BackupTime);
-        Assert.NotNull(backupToFind.BackupTime);
-        Assert.Equal(backupFinded.BackupTime.Value, backupToFind.BackupTime.Value, TimeSpan.FromSeconds(0.9));
+        Assert.NotNull(backupFinded.LastBackupTime);
+        Assert.NotNull(backupToFind.LastBackupTime);
+        Assert.Equal(backupFinded.LastBackupTime.Value, backupToFind.LastBackupTime.Value, TimeSpan.FromSeconds(0.9));
 
         DropDataBase();
       }
@@ -45,7 +45,7 @@ namespace SystemAdministrationTest.LastBackups.Infrastructure.MongoDB
     public async void ID_NotFound_ShouldReturnNull()
     {
       // Given the Database has Backups
-      ImmutableList<Backup> backups = BackupsFactory.BuildArrayOfBackupsRandom();
+      ImmutableList<Machine> backups = MachineFactory.BuildArrayOfBackupsRandom();
 
       using (BackupsContext existingDataContext = GetTemporalDBContext())
       {
@@ -53,8 +53,8 @@ namespace SystemAdministrationTest.LastBackups.Infrastructure.MongoDB
         existingDataContext.SaveChanges();
       }
       // When the finding Id is not in the Database
-      Backup backupToFind = BackupsFactory.BuildBackupRandom();
-      Backup? backupFinded;
+      Machine backupToFind = MachineFactory.BuildBackupRandom();
+      Machine? backupFinded;
       using (BackupsContext whenBackupContext = GetTemporalDBContext())
       {
         MongoDBBackupsRepository repository = new MongoDBBackupsRepository(whenBackupContext);

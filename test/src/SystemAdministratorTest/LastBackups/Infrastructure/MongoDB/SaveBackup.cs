@@ -12,7 +12,7 @@ namespace SystemAdministrationTest.LastBackups.Infrastructure.MongoDB
     public void Add_new_Backup()
     {
       // Given database is empty and I have a new Backup
-      Backup Backup = BackupsFactory.BuildBackupRandom();
+      Machine Backup = MachineFactory.BuildBackupRandom();
 
       // When save the new element
       using (BackupsContext testContext = GetTemporalDBContext())
@@ -33,7 +33,7 @@ namespace SystemAdministrationTest.LastBackups.Infrastructure.MongoDB
     public void Update_existing_Backup()
     {
       // Given database has one Backup
-      Backup Backup = BackupsFactory.BuildBackupRandom();
+      Machine Backup = MachineFactory.BuildBackupRandom();
       using (BackupsContext existingDataContext = GetTemporalDBContext())
       {
         existingDataContext.Backups.Add(BackupsEntity.FromDomain(Backup));
@@ -42,11 +42,11 @@ namespace SystemAdministrationTest.LastBackups.Infrastructure.MongoDB
 
       // When a field change and we save the element
       BackupDate newBackupDate = new BackupDate(DateTime.Now);
-      Backup BackupUpdated = new(new MachineId(Backup.MachineId.Value),
+      Machine BackupUpdated = new(new MachineId(Backup.MachineId.Value),
                                                     new MachineName(Backup.MachineName.Value),
-                                                    BackupStatus.Parse(Backup.Status.ToString()),
+                                                    BackupStatus.Parse(Backup.LastBackupStatus.ToString()),
                                                     newBackupDate,
-                                                    BackupType.Parse(Backup.BackupType.ToString()),
+                                                    BackupType.Parse(Backup.LastBackupType.ToString()),
                                                     null != Backup.LastRecoveryPoint ? new BackupDate(Backup.LastRecoveryPoint.Value) : null,
                                                     new VaultId(Backup.VaultId.Value),
                                                     new SuscriptionId(Backup.SuscriptionId.Value),

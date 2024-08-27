@@ -3,7 +3,7 @@ using Shared.Domain.ValueObjects;
 
 namespace Clouds.LastBackups.Domain
 {
-  public class LastBackupStatusDomainEvent : DomainEvent
+  public class LastBackupStatusDomainEvent : DomainEventPublisher
   {
     public LastBackupStatusDomainEvent(string machineId, string machineName, string status,
                                         string backupTime, string backupType, string lastRecoveryPoint,
@@ -19,6 +19,7 @@ namespace Clouds.LastBackups.Domain
       SuscriptionId = suscriptionId;
       TenantId = tenantId;
     }
+
     public string MachineName { get; }
     public string Status { get; }
     public string BackupTime { get; }

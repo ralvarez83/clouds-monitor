@@ -16,6 +16,7 @@ public abstract class DomainEvent
     OccurredOn = occurredOn != null ? occurredOn.Value.ToString() : SimpleDate.Now().ToString();
   }
 
+  protected DomainEvent() { }
+
   public abstract string EventName();
-  public abstract Dictionary<string, string> ToPrimitives();
 }

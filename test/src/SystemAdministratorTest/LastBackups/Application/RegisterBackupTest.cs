@@ -14,23 +14,24 @@ namespace SystemAdministrationTest.LastBackup.Application
   {
 
     private RegisterBackupHandler _handler;
+    private RegisterBackupSubscriber _subscriber;
     public RegisterBackupTest()
     {
       _handler = new RegisterBackupHandler(new RegisterBackup(_repository.Object));
+      _subscriber = new RegisterBackupSubscriber(new RegisterBackup(_repository.Object));
     }
 
     [Fact]
     public void NewBackupShouldSaved()
     {
       // Given the backup is not in repository
-      ImmutableList<Backup> backupsInRepository = BackupsFactory.BuildArrayOfBackupsRandom();
+      ImmutableList<Machine> backupsInRepository = MachineFactory.BuildArrayOfBackupsRandom();
       ConfigureGetRepositoryGetById(backupsInRepository);
 
 
       // When backup is Register
-      BackupDto newBackup = BackupsDtoFactory.BuildBackupDtoRandom();
-      RegisterBackupCommand command = new RegisterBackupCommand(newBackup);
-      _handler.Handle(command);
+      MachineDomainEvent newBackup = MachineDomainEnventFactory.BuildBackupDtoRandom();
+      _subscriber.On(newBackup);
 
       // Then the save repository method must be callled
       ShouldHaveSave(1);
@@ -40,13 +41,12 @@ namespace SystemAdministrationTest.LastBackup.Application
     public void MachineIsNotUpdateWithSameBackupData()
     {
       // Given the machine exists in repository and backup data is update
-      ImmutableList<Backup> backupsInRepository = BackupsFactory.BuildArrayOfBackupsRandom();
-      ConfigureGetRepositoryGetById(backupsInRepository);
+      ImmutableList<Machine> machinesInRepository = MachineFactory.BuildArrayOfBackupsRandom();
+      ConfigureGetRepositoryGetById(machinesInRepository);
 
       // When backup wants to be register with no new data
-      BackupDto backupWithNoNewData = BackupDtoWrapper.FromDomain(backupsInRepository.First());
-      RegisterBackupCommand command = new RegisterBackupCommand(backupWithNoNewData);
-      _handler.Handle(command);
+      MachineDomainEvent machineDomainEvent = MachineDomainEnventFactory.WrapperFromDomain(machinesInRepository.First());
+      _subscriber.On(machineDomainEvent);
 
       // Then the manchine is not updated
       ShouldHaveSave(0);
@@ -57,64 +57,62 @@ namespace SystemAdministrationTest.LastBackup.Application
     public void MachineIsUpdateWithNewBackup()
     {
       // Given the machine exists in repository but backup data is older
-      ImmutableList<Backup> backupsInRepository = BackupsFactory.BuildArrayOfBackupsRandom();
-      ConfigureGetRepositoryGetById(backupsInRepository);
+      ImmutableList<Machine> machinesInRepository = MachineFactory.BuildArrayOfBackupsRandom();
+      ConfigureGetRepositoryGetById(machinesInRepository);
 
       // When a new backup is register
 
-      BackupDto backupDto = BackupDtoWrapper.FromDomain(backupsInRepository.First());
-      DateTime newBackupDate = backupDto.backupTime.HasValue ? backupDto.backupTime.Value.AddDays(1) : DateTime.Now;
+      Machine machineInRepository = machinesInRepository.First();
 
-      BackupDto backupWithNewData = new BackupDto(
-                                                  backupDto.machineId,
-                                                  backupDto.machineName,
-                                                  backupDto.status,
-                                                  newBackupDate,
-                                                  backupDto.backupType,
-                                                  backupDto.lastRecoveryPoint,
-                                                  backupDto.vaultId,
-                                                  backupDto.suscriptionId,
-                                                  backupDto.TenantId);
+      BackupDate newBackupDate = new BackupDate(machinesInRepository.First().LastBackupTime.Value.AddDays(1));
 
-      RegisterBackupCommand command = new RegisterBackupCommand(backupWithNewData);
-      _handler.Handle(command);
+      MachineDomainEvent machineDomainEventWithNewData = new MachineDomainEvent(machineInRepository.MachineId.Value,
+                                                                                machineInRepository.MachineName.Value,
+                                                                                machineInRepository.LastBackupStatus.ToString(),
+                                                                                newBackupDate.ToString(),
+                                                                                machineInRepository.LastBackupType.ToString(),
+                                                                                machineInRepository.LastRecoveryPoint.ToString(),
+                                                                                machineInRepository.VaultId.Value,
+                                                                                machineInRepository.SuscriptionId.Value,
+                                                                                machineInRepository.TenantId.Value);
+
+      _subscriber.On(machineDomainEventWithNewData);
+
 
       // Then machine backup data is update
-      ShouldHaveSaveWithBackupData(BackupWrapper.FromDto(backupWithNewData));
+      ShouldHaveSaveWithBackupData(MachineWrapper.FromDomainEntity(machineDomainEventWithNewData));
     }
 
     [Fact]
     public void MachineLastBackupNullIsUpdate()
     {
       // Given the machine existis but hasn't LastBackupRecovery
-      ImmutableList<Backup> backupsInRepository = BackupsFactory.BuildArrayOfBackupsRandom();
-      backupsInRepository.First().LastRecoveryPoint = null;
-      ConfigureGetRepositoryGetById(backupsInRepository);
+      ImmutableList<Machine> machinesInRepository = MachineFactory.BuildArrayOfBackupsRandom();
+      machinesInRepository.First().LastRecoveryPoint = null;
+      ConfigureGetRepositoryGetById(machinesInRepository);
 
       // When save a new backupData with LastBackupRecovery
+      Machine machineInRepository = machinesInRepository.First();
 
-      BackupDto backupDto = BackupDtoWrapper.FromDomain(backupsInRepository.First());
-      DateTime newBackupDate = backupDto.backupTime.HasValue ? backupDto.backupTime.Value.AddDays(1) : DateTime.Now;
+      BackupDate newBackupDate = new BackupDate(machinesInRepository.First().LastBackupTime.Value.AddDays(1));
 
-      BackupDto backupWithNewData = new BackupDto(
-                                                  backupDto.machineId,
-                                                  backupDto.machineName,
-                                                  backupDto.status,
-                                                  newBackupDate,
-                                                  backupDto.backupType,
-                                                  newBackupDate,
-                                                  backupDto.vaultId,
-                                                  backupDto.suscriptionId,
-                                                  backupDto.TenantId);
+      MachineDomainEvent machineDomainEventWithNewData = new MachineDomainEvent(machineInRepository.MachineId.Value,
+                                                                                machineInRepository.MachineName.Value,
+                                                                                machineInRepository.LastBackupStatus.ToString(),
+                                                                                newBackupDate.ToString(),
+                                                                                machineInRepository.LastBackupType.ToString(),
+                                                                                newBackupDate.ToString(),
+                                                                                machineInRepository.VaultId.Value,
+                                                                                machineInRepository.SuscriptionId.Value,
+                                                                                machineInRepository.TenantId.Value);
 
-      RegisterBackupCommand command = new RegisterBackupCommand(backupWithNewData);
-      _handler.Handle(command);
+      _subscriber.On(machineDomainEventWithNewData);
 
       // Then the machine is updated
-      ShouldHaveSaveWithBackupData(BackupWrapper.FromDto(backupWithNewData));
+      ShouldHaveSaveWithBackupData(MachineWrapper.FromDomainEntity(machineDomainEventWithNewData));
     }
 
-    private void ConfigureGetRepositoryGetById(ImmutableList<Backup> backupsInRepository)
+    private void ConfigureGetRepositoryGetById(ImmutableList<Machine> backupsInRepository)
     {
       _repository
         .Setup(_ => _.GetById(
@@ -123,7 +121,7 @@ namespace SystemAdministrationTest.LastBackup.Application
         .Returns<MachineId>((MachineId machineId) =>
                 {
                   return Task.Run(
-                    () => backupsInRepository.First<Backup?>(backup => backup.MachineId.Value == machineId.Value));
+                    () => backupsInRepository.First<Machine?>(backup => backup.MachineId.Value == machineId.Value));
                 }
         );
     }
