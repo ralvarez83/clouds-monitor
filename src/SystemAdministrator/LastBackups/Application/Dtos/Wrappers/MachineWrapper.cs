@@ -1,3 +1,4 @@
+using Shared.Domain.Machines.Domain;
 using Shared.Domain.ValueObjects;
 using SystemAdministrator.LastBackups.Domain;
 
@@ -19,14 +20,14 @@ public class MachineWrapper
       tenantId: new TenantId(backup.TenantId)
     );
   }
-  public static Machine FromDomainEntity(MachineDomainEvent machine)
+  public static Machine FromDomainEntity(LastBackupStatusDomainEvent machine)
   {
     return new Machine(
       machineId: new MachineId(machine.Id),
       machineName: new MachineName(machine.MachineName),
-      lastBackupStatus: BackupStatus.Parse(machine.LastBackupStatus),
-      lastBackupTime: new BackupDate(machine.LastBackupTime),
-      lastBackupType: BackupType.Parse(machine.LastBackupType),
+      lastBackupStatus: BackupStatus.Parse(machine.Status),
+      lastBackupTime: new BackupDate(machine.BackupTime),
+      lastBackupType: BackupType.Parse(machine.BackupType),
       lastRecoveryPoint: new BackupDate(machine.LastRecoveryPoint),
       vaultId: new VaultId(machine.VaultId),
       suscriptionId: new SuscriptionId(machine.SuscriptionId),

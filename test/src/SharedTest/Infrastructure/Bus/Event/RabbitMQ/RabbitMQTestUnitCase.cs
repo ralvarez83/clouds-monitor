@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using Shared.Domain.Bus.Event;
 using Shared.Infrastructure.Bus.Event.RabbitMQ;
+using SharedTest.Domain;
 
 namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
 {
@@ -49,6 +50,10 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
           // return new RabbitMQEventBus(publisher, "test_domain_events_" + TimeSpan.FromTicks(DateTime.Now.Ticks).Milliseconds);
         }
         );
+        services.AddScoped<DomainEventsInformation, DomainEventsInformation>();
+        services.AddScoped<DomainEventJsonDeserializer, DomainEventJsonDeserializer>();
+        services.AddScoped<Subscriber, SubscriberFake>();
+        services.AddScoped<Consumer, RabbitMQConsumer>();
       };
     }
 

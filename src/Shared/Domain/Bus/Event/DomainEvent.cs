@@ -12,11 +12,14 @@ public abstract class DomainEvent
   protected DomainEvent(string id, string? eventId, SimpleDate? occurredOn)
   {
     Id = id;
-    EventId = eventId ?? new SimpleUuid().Value.ToString();
-    OccurredOn = occurredOn != null ? occurredOn.Value.ToString() : SimpleDate.Now().ToString();
+    EventId = eventId ?? new SimpleUuid().ToString();
+    OccurredOn = occurredOn != null ? occurredOn.ToString() : SimpleDate.Now().ToString();
   }
 
   protected DomainEvent() { }
 
   public abstract string EventName();
+  public abstract Dictionary<string, string> ToPrimitives();
+  public abstract DomainEvent FromPrimitives(string aggregateId, Dictionary<string, string> body, string eventId,
+            string occurredOn);
 }

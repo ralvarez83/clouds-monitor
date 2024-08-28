@@ -1,4 +1,5 @@
 using Shared.Domain.Aggregate;
+using Shared.Domain.Machines.Domain;
 using Shared.Domain.ValueObjects;
 
 namespace Clouds.LastBackups.Domain;

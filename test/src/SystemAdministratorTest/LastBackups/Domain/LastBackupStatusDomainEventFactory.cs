@@ -1,32 +1,33 @@
 using System.Collections.Immutable;
 using AutoFixture;
+using Shared.Domain.Machines.Domain;
 using Shared.Domain.ValueObjects;
 using SystemAdministrator.LastBackups.Domain;
 
 namespace SystemAdministrationTest.Backups.Domain;
 
-public class MachineDomainEnventFactory
+public class LastBackupStatusDomainEventFactory
 {
-  public static ImmutableList<MachineDomainEvent> BuildArrayOfBackupDtosRandom()
+  public static ImmutableList<LastBackupStatusDomainEvent> BuildArrayOfBackupDtosRandom()
   {
     return MachineFactory.BuildArrayOfBackupsRandom().Select(WrapperFromDomain).ToImmutableList();
   }
 
-  public static ImmutableList<MachineDomainEvent> BuildArrayOfBackupDtosEmpty()
+  public static ImmutableList<LastBackupStatusDomainEvent> BuildArrayOfBackupDtosEmpty()
   {
-    return new List<MachineDomainEvent>().ToImmutableList();
+    return new List<LastBackupStatusDomainEvent>().ToImmutableList();
   }
 
-  public static MachineDomainEvent BuildBackupDtoRandom()
+  public static LastBackupStatusDomainEvent BuildBackupDtoRandom()
   {
     return WrapperFromDomain(MachineFactory.BuildBackupRandom());
   }
 
-  public static MachineDomainEvent WrapperFromDomain(Machine machine)
+  public static LastBackupStatusDomainEvent WrapperFromDomain(Machine machine)
   {
     Fixture fixture = new Fixture();
 
-    return new MachineDomainEvent(machine.MachineId.Value,
+    return new LastBackupStatusDomainEvent(machine.MachineId.Value,
                                   machine.MachineName.Value,
                                   machine.LastBackupStatus.ToString(),
                                   machine.LastBackupTime.ToString(),

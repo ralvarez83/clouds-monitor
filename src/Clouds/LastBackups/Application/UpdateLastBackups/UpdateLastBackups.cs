@@ -37,7 +37,7 @@ namespace Clouds.LastBackups.Application.UpdateLastBackups
 
         lastBackupsToSave.ForEach(action: repository.Save);
 
-        List<DomainEventPublisher> events = new List<DomainEventPublisher>();
+        List<DomainEvent> events = new List<DomainEvent>();
 
         foreach (LastBackupStatus backupStatus in lastBackupsToSave)
         {

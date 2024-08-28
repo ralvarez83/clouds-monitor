@@ -18,12 +18,12 @@ namespace CloudsTest.LastBackups.Infrastructure
 
     public void ShouldHavePublished(int items, int times)
     {
-      _eventBusMok.Verify(x => x.Publish(It.Is<List<DomainEventPublisher>>(list => list.Count == items)), Times.Exactly(times));
+      _eventBusMok.Verify(x => x.Publish(It.Is<List<DomainEvent>>(list => list.Count == items)), Times.Exactly(times));
     }
 
     public void ShouldHaveNotPublished()
     {
-      _eventBusMok.Verify(x => x.Publish(It.IsAny<List<DomainEventPublisher>>()), Times.Never);
+      _eventBusMok.Verify(x => x.Publish(It.IsAny<List<DomainEvent>>()), Times.Never);
     }
 
     public void ShouldHaveSave(int? times = null)

@@ -14,5 +14,10 @@ public class SimpleUuid : ValueObjectsBase
         Value = Guid.NewGuid();
     }
 
+    public override string ToString()
+    {
+        return Value.ToString();
+    }
+
     public static string GetName() => "SimpleUuid";
 }

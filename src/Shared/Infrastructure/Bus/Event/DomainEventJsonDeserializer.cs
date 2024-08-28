@@ -1,41 +1,37 @@
+using Newtonsoft.Json;
+using Shared.Domain.ValueObjects;
 using System.Reflection;
-using System.Net.Http.Json;
 
 // Base on C#-ddd-scheleton by CodelyTV: https://github.com/CodelyTV/csharp-ddd-skeleton
 namespace Shared.Domain.Bus.Event
 {
-    public class DomainEventJsonDeserializer
+    public class DomainEventJsonDeserializer(DomainEventsInformation information)
     {
-        // private readonly DomainEventsInformation information;
+        private readonly DomainEventsInformation information = information;
 
-        // public DomainEventJsonDeserializer(DomainEventsInformation information)
-        // {
-        //     this.information = information;
-        // }
+        public DomainEvent Deserialize(string body)
+        {
+            var eventData = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(body);
 
-        // public DomainEvent Deserialize(string body)
-        // {
-        //     var eventData = JsonContent.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(body);
+            var data = eventData["data"];
+            var attributes = JsonConvert.DeserializeObject<Dictionary<string, string>>(data["attributes"].ToString());
 
-        //     var data = eventData["data"];
-        //     var attributes = JsonConvert.DeserializeObject<Dictionary<string, string>>(data["attributes"].ToString());
+            Type domainEventType = information.FromEventName((string)data["type"]);
 
-        //     var domainEventType = information.ForName((string)data["type"]);
+            DomainEvent instance = (DomainEvent)Activator.CreateInstance(domainEventType);
 
-        //     var instance = (DomainEvent)Activator.CreateInstance(domainEventType);
+            DomainEvent domainEvent = (DomainEvent)domainEventType
+                .GetTypeInfo()
+                .GetDeclaredMethod(nameof(DomainEvent.FromPrimitives))
+                .Invoke(instance, new object[]
+                {
+                    attributes["id"],
+                    attributes,
+                    data["id"],
+                    new SimpleDate((DateTime) data["occurred_on"]).ToString()
+                });
 
-        //     var domainEvent = (DomainEvent)domainEventType
-        //         .GetTypeInfo()
-        //         .GetDeclaredMethod(nameof(DomainEvent.FromPrimitives))
-        //         .Invoke(instance, new object[]
-        //         {
-        //             attributes["id"],
-        //             attributes,
-        //             data["id"].ToString(),
-        //             data["occurred_on"].ToString()
-        //         });
-
-        //     return domainEvent;
-        // }
+            return domainEvent;
+        }
     }
 }

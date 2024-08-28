@@ -1,3 +1,5 @@
+using Clouds.LastBackups.Infraestructure.Bus.RabbitMQ;
+using RabbitMQ.Client;
 using Shared.Domain.Bus.Event;
 using Shared.Infrastructure.Bus.Event.RabbitMQ;
 using SharedTest.Domain;
@@ -7,7 +9,7 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
   public class ConsumerEventsShould : RabbitMQTestUnitCase
   {
     [Fact]
-    public void ConnectTo_ExchangeAndQueue_And_ReadAMessage()
+    public async Task ConnectTo_ExchangeAndQueue_And_ReadAMessageAsync()
     {
       // Given a exchange and queue exists with a message
       RabbitMQEventBus? rabbitMQEventBus = GetService<EventBus>() as RabbitMQEventBus;
@@ -24,44 +26,32 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
       if (null == rabbitMQConsumer)
         throw new Exception("El servicio RabbitMQConsumer no encontrado");
 
-      rabbitMQConsumer.Consume();
+      await rabbitMQConsumer.Consume();
 
       // Then read the message
+      RabbitMQSettings? settings = GetService<RabbitMQSettings>();
+      if (null == settings)
+        throw new Exception("La sección RabbitMQSettings no encontrada");
 
+      string queue = settings.Exchange.Subscribers.First().QueuName;
+      var messageNumber = GetMessageCount(queue);
+      Assert.Equal(0, messageNumber);
     }
 
-    // private async Task evaluateEventRead(DomainEventFake[] sentEvents)
-    // {
 
-    //   RabbitMQConfig? config = GetService<RabbitMQConfig>();
-    //   if (null == config)
-    //     throw new Exception("El servicio RabbitMQConfig no encontrado");
+    public int GetMessageCount(string queueName)
+    {
+      RabbitMQConfig? config = GetService<RabbitMQConfig>();
+      if (null == config)
+        throw new Exception("El servicio RabbitMQConfig no encontrado");
 
-    //   RabbitMQSettings? settings = GetService<RabbitMQSettings>();
-    //   if (null == settings)
-    //     throw new Exception("La sección RabbitMQSettings no encontrada");
+      int numberOfMessages = -1;
+      using (IModel channel = config.Connection().CreateModel())
+      {
+        numberOfMessages = (int)channel.MessageCount(queueName);
+      }
 
-    //   string queuName = settings.Exchange.Subscribers.First().QueuName;
-
-    //   IModel channel = config.Channel();
-    //   EventingBasicConsumer consumer = new EventingBasicConsumer(channel);
-    //   List<string> messagesShouldReceived = sentEvents.Select(DomainEventJsonSerializer.Serialize).ToList();
-    //   List<string> messagesReceibed = [];
-
-    //   consumer.Received += (model, ea) =>
-    //   {
-    //     byte[] body = ea.Body.ToArray();
-    //     messagesReceibed.Add(Encoding.UTF8.GetString(body));
-    //   };
-
-    //   channel.BasicConsume(queue: queuName,
-    //                        autoAck: true,
-    //                        consumer: consumer);
-
-    //   await WaitFor(() => Task.Run(() => messagesReceibed.Count < messagesShouldReceived.Count));
-
-    //   Assert.Equal(messagesShouldReceived, messagesReceibed);
-
-    // }
+      return numberOfMessages;
+    }
   }
 }

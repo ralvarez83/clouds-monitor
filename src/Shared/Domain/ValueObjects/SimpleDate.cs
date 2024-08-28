@@ -28,6 +28,7 @@ namespace Shared.Domain.ValueObjects
     public override string ToString()
     {
       return Value.ToString("s", CultureInfo.CurrentCulture);
+      // return Value.ToString();
     }
 
     public override bool Equals(object? obj)

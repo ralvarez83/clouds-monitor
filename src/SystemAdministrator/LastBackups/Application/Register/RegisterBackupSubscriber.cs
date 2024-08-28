@@ -1,4 +1,5 @@
 using Shared.Domain.Bus.Event;
+using Shared.Domain.Machines.Domain;
 using SystemAdministrator.LastBackups.Application.Dtos.Wrappers;
 using SystemAdministrator.LastBackups.Domain;
 
@@ -9,7 +10,7 @@ namespace SystemAdministrator.LastBackups.Application.Register
     private readonly RegisterBackup registerBackup = registerBackup;
     public Task On(DomainEvent domainEvent)
     {
-      Machine machine = MachineWrapper.FromDomainEntity((MachineDomainEvent)domainEvent);
+      Machine machine = MachineWrapper.FromDomainEntity((LastBackupStatusDomainEvent)domainEvent);
       registerBackup.Register(machine);
 
       return Task.CompletedTask;

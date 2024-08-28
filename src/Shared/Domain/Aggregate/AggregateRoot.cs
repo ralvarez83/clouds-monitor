@@ -4,18 +4,18 @@ namespace Shared.Domain.Aggregate
 {
   public abstract class AggregateRoot
   {
-    private List<DomainEventPublisher> _domainEvents = new List<DomainEventPublisher>();
+    private List<DomainEvent> _domainEvents = new List<DomainEvent>();
 
-    public List<DomainEventPublisher> PullDomainEvents()
+    public List<DomainEvent> PullDomainEvents()
     {
-      List<DomainEventPublisher> events = _domainEvents;
+      List<DomainEvent> events = _domainEvents;
 
-      _domainEvents = new List<DomainEventPublisher>();
+      _domainEvents = new List<DomainEvent>();
 
       return events;
     }
 
-    protected void Record(DomainEventPublisher domainEvent)
+    protected void Record(DomainEvent domainEvent)
     {
       _domainEvents.Add(domainEvent);
     }

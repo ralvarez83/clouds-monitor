@@ -18,12 +18,12 @@ namespace SystemAdministrationTest.LastBackups.Infrastructure
 
     public void ShouldHavePublished(int items, int times)
     {
-      _eventBusMok.Verify(x => x.Publish(It.Is<List<DomainEventPublisher>>(list => list.Count == items)), Times.Exactly(times));
+      _eventBusMok.Verify(x => x.Publish(It.Is<List<DomainEvent>>(list => list.Count == items)), Times.Exactly(times));
     }
 
     public void ShouldHaveNotPublished()
     {
-      _eventBusMok.Verify(x => x.Publish(It.IsAny<List<DomainEventPublisher>>()), Times.Never);
+      _eventBusMok.Verify(x => x.Publish(It.IsAny<List<DomainEvent>>()), Times.Never);
     }
 
     public void ShouldHaveSave(int? times = null)
@@ -46,7 +46,7 @@ namespace SystemAdministrationTest.LastBackups.Infrastructure
       _repository.Verify(_ => _.Save(It.Is<Machine>(
         (backup) => backup.MachineId.Value == backupSaved.MachineId.Value &&
                     backup.MachineName.Value == backupSaved.MachineName.Value &&
-                    backup.LastBackupTime.Value.ToString() == backupSaved.LastBackupTime.Value.ToString() &&
+                    backup.LastBackupTime.ToString() == backupSaved.LastBackupTime.ToString() &&
                     backup.LastBackupType.Equals(backup.LastBackupType) &&
                     backup.LastBackupStatus.Equals(backupSaved.LastBackupStatus) &&
                     backup.LastRecoveryPoint.Equals(backupSaved.LastRecoveryPoint) &&

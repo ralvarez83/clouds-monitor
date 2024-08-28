@@ -1,9 +1,9 @@
 using System.Collections.Immutable;
 using Moq;
+using Shared.Domain.Machines.Domain;
 using Shared.Domain.ValueObjects;
 using SystemAdministrationTest.Backups.Domain;
 using SystemAdministrationTest.LastBackups.Infrastructure;
-using SystemAdministrator.LastBackups.Application.Dtos;
 using SystemAdministrator.LastBackups.Application.Dtos.Wrappers;
 using SystemAdministrator.LastBackups.Application.Register;
 using SystemAdministrator.LastBackups.Domain;
@@ -27,7 +27,7 @@ namespace SystemAdministrationTest.LastBackup.Application
 
 
       // When backup is Register
-      MachineDomainEvent newBackup = MachineDomainEnventFactory.BuildBackupDtoRandom();
+      LastBackupStatusDomainEvent newBackup = LastBackupStatusDomainEventFactory.BuildBackupDtoRandom();
       _subscriber.On(newBackup);
 
       // Then the save repository method must be callled
@@ -42,7 +42,7 @@ namespace SystemAdministrationTest.LastBackup.Application
       ConfigureGetRepositoryGetById(machinesInRepository);
 
       // When backup wants to be register with no new data
-      MachineDomainEvent machineDomainEvent = MachineDomainEnventFactory.WrapperFromDomain(machinesInRepository.First());
+      LastBackupStatusDomainEvent machineDomainEvent = LastBackupStatusDomainEventFactory.WrapperFromDomain(machinesInRepository.First());
       _subscriber.On(machineDomainEvent);
 
       // Then the manchine is not updated
@@ -63,7 +63,7 @@ namespace SystemAdministrationTest.LastBackup.Application
 
       BackupDate newBackupDate = new BackupDate(machinesInRepository.First().LastBackupTime.Value.AddDays(1));
 
-      MachineDomainEvent machineDomainEventWithNewData = new MachineDomainEvent(machineInRepository.MachineId.Value,
+      LastBackupStatusDomainEvent machineDomainEventWithNewData = new LastBackupStatusDomainEvent(machineInRepository.MachineId.Value,
                                                                                 machineInRepository.MachineName.Value,
                                                                                 machineInRepository.LastBackupStatus.ToString(),
                                                                                 newBackupDate.ToString(),
@@ -93,7 +93,7 @@ namespace SystemAdministrationTest.LastBackup.Application
 
       BackupDate newBackupDate = new BackupDate(machinesInRepository.First().LastBackupTime.Value.AddDays(1));
 
-      MachineDomainEvent machineDomainEventWithNewData = new MachineDomainEvent(machineInRepository.MachineId.Value,
+      LastBackupStatusDomainEvent machineDomainEventWithNewData = new LastBackupStatusDomainEvent(machineInRepository.MachineId.Value,
                                                                                 machineInRepository.MachineName.Value,
                                                                                 machineInRepository.LastBackupStatus.ToString(),
                                                                                 newBackupDate.ToString(),

@@ -7,12 +7,12 @@ namespace Shared.Infrastructure.Bus.Event.RabbitMQ
   {
     private readonly RabbitMQPublisher publisher = publisher;
 
-    public void Publish(List<DomainEventPublisher> domainEvents)
+    public void Publish(List<DomainEvent> domainEvents)
     {
       domainEvents.ForEach(Publish);
     }
 
-    private void Publish(DomainEventPublisher domainEvent)
+    private void Publish(DomainEvent domainEvent)
     {
       string message = DomainEventJsonSerializer.Serialize(domainEvent);
 
