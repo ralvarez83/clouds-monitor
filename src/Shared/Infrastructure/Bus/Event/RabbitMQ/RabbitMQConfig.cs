@@ -11,6 +11,7 @@ namespace Clouds.LastBackups.Infraestructure.Bus.RabbitMQ
         private static IConnection _connection { get; set; }
         private static IModel _channel { get; set; }
         private Exchanges exchange { get; }
+        private int deliveryLimit { get; }
 
         public string ExchangeName
         {
@@ -29,14 +30,17 @@ namespace Clouds.LastBackups.Infraestructure.Bus.RabbitMQ
                 HostName = configParams.HostName,
                 UserName = configParams.UserName,
                 Password = configParams.Password,
-                Port = configParams.Port
+                Port = configParams.Port,
+                AutomaticRecoveryEnabled = true
             };
             exchange = configParams.Exchange;
+            deliveryLimit = configParams.DeliveryLimit;
         }
 
         public IConnection Connection()
         {
             if (_connection == null) _connection = ConnectionFactory.CreateConnection();
+
             return _connection;
         }
 
@@ -54,16 +58,44 @@ namespace Clouds.LastBackups.Infraestructure.Bus.RabbitMQ
         {
             if (null != exchange)
             {
+                string deadLetterExchangeName = RabbitMqExchangeNameFormatter.DeadLetter(exchange.Name);
+
                 _channel.ExchangeDeclare(exchange.Name, ExchangeType.Topic);
+                _channel.ExchangeDeclare(deadLetterExchangeName, ExchangeType.Topic);
+
                 foreach (Subscribers subscriber in exchange.Subscribers)
                 {
-                    var queue = _channel.QueueDeclare(subscriber.QueuName,
+                    Dictionary<String, Object> args = new()
+                    {
+                        {"x-dead-letter-exchange", deadLetterExchangeName},
+                        {"x-queue-type", "quorum"},
+                        {"x-delivery-limit", deliveryLimit}
+                    };
+                    var queue = _channel.QueueDeclare(subscriber.QueueName,
                     true,
                     false,
-                    false);
+                    false,
+                    args);
+
+                    string deadLetterQueueName = RabbitMQQueueNameFormatter.DeadLetter(subscriber.QueueName);
+                    var deadLetterQueue = _channel.QueueDeclare(deadLetterQueueName, true,
+                        false,
+                        false);
+
                     _channel.QueueBind(queue, exchange.Name, subscriber.EventName);
+                    _channel.QueueBind(deadLetterQueue, deadLetterExchangeName, subscriber.EventName);
                 }
             }
+        }
+        private IDictionary<string, object> RetryQueueArguments(string domainEventExchange,
+            string domainEventQueue)
+        {
+            return new Dictionary<string, object>
+            {
+                {"x-dead-letter-exchange", domainEventExchange},
+                {"x-dead-letter-routing-key", domainEventQueue},
+                {"x-message-ttl", 1000}
+            };
         }
 
         public void Dispose()

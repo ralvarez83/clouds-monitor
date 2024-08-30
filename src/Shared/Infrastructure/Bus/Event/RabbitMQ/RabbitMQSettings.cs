@@ -9,6 +9,7 @@ namespace Clouds.LastBackups.Infraestructure.Bus.RabbitMQ
     public string UserName { get; set; } = "";
     public string Password { get; set; } = "";
     public int Port { get; set; }
+    public int DeliveryLimit { get; set; }
     public Exchanges? Exchange { get; set; }
     public const string Name = "RabbitMQ";
   }

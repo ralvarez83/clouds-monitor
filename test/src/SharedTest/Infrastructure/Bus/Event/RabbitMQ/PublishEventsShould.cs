@@ -77,7 +77,7 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
       if (null == settings)
         throw new Exception("La sección RabbitMQSettings no encontrada");
 
-      string queuName = settings.Exchange.Subscribers.First().QueuName;
+      string queuName = settings.Exchange.Subscribers.First().QueueName;
 
       IModel channel = config.Channel();
       EventingBasicConsumer consumer = new EventingBasicConsumer(channel);

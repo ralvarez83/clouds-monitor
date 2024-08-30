@@ -8,21 +8,19 @@ namespace Shared.Infrastructure.Bus.Event.RabbitMQ
   public class RabbitMQPublisher(RabbitMQConfig config)
   {
     private readonly RabbitMQConfig config = config;
-    private const string HeaderReDelivery = "redelivery_count";
 
     public void Publish(string eventName, string message)
     {
-      IModel channel = config.Channel();
-      channel.ExchangeDeclare(config.ExchangeName, ExchangeType.Topic);
       byte[] body = Encoding.UTF8.GetBytes(message);
+      Publish(config.ExchangeName, eventName, body);
+    }
 
-      IBasicProperties properties = channel.CreateBasicProperties();
-      properties.Headers = new Dictionary<string, object>
-            {
-                {HeaderReDelivery, 0}
-            };
+    public void Publish(string exchangeName, string eventName, byte[] body, int reDelivery = 0)
+    {
+      IModel channel = config.Channel();
+      channel.ExchangeDeclare(exchangeName, ExchangeType.Topic);
 
-      channel.BasicPublish(exchange: config.ExchangeName,
+      channel.BasicPublish(exchange: exchangeName,
                            routingKey: eventName,
                            basicProperties: null,
                            body: body);

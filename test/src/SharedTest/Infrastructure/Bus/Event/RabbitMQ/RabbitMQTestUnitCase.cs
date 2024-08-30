@@ -31,11 +31,11 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
 
         rabbitMQSettings.Exchange = new Exchanges(
           rabbitMQSettings.Exchange.Name + postNames,
-          rabbitMQSettings.Exchange.Subscribers.Select(suscriber => new Subscribers(suscriber.QueuName + postNames, suscriber.EventName)).ToArray()
+          rabbitMQSettings.Exchange.Subscribers.Select(suscriber => new Subscribers(suscriber.QueueName + postNames, suscriber.EventName)).ToArray()
           );
-        services.AddScoped<RabbitMQSettings>(servicesProvider => rabbitMQSettings);
+        services.AddScoped(servicesProvider => rabbitMQSettings);
 
-        services.AddScoped<RabbitMQConfig>(serviceProvider =>
+        services.AddScoped(serviceProvider =>
         {
           IOptions<RabbitMQSettings> rabbitMqParams = Options.Create(rabbitMQSettings);
           return new RabbitMQConfig(rabbitMqParams);
@@ -101,10 +101,19 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
         throw new Exception("La sección RabbitMQSettings no encontrada");
 
       IModel channel = config.Channel();
+      string exchangeDeadLetterName = RabbitMqExchangeNameFormatter.DeadLetter(settings.Exchange.Name);
+
       channel.ExchangeDelete(settings.Exchange.Name);
+      channel.ExchangeDelete(exchangeDeadLetterName);
 
       foreach (Subscribers subscriber in settings.Exchange.Subscribers)
-        channel.QueueDelete(subscriber.QueuName);
+      {
+        string deadLetterQueueName = RabbitMQQueueNameFormatter.DeadLetter(subscriber.QueueName);
+
+        channel.QueueDelete(subscriber.QueueName);
+        channel.QueueDelete(deadLetterQueueName);
+
+      }
     }
 
   }

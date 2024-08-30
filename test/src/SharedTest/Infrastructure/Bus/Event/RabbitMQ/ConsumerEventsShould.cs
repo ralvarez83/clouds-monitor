@@ -8,10 +8,86 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
 {
   public class ConsumerEventsShould : RabbitMQTestUnitCase
   {
+    private RabbitMQSettings settings;
+    public ConsumerEventsShould()
+    {
+      RabbitMQSettings? settings = GetService<RabbitMQSettings>();
+      if (null == settings)
+        throw new Exception("La sección RabbitMQSettings no encontrada");
+      this.settings = settings;
+    }
+
     [Fact]
     public async Task ConnectTo_ExchangeAndQueue_And_ReadAMessageAsync()
     {
       // Given a exchange and queue exists with a message
+      GivenAnExchangeAndQueueHasAMessage();
+
+      // When connect to this queue and wait for a message
+      await WhenConsumeMessagesAsync();
+
+      // Then read the message
+
+      string queue = settings.Exchange.Subscribers.First().QueueName;
+      var messageNumber = GetMessageCount(queue);
+      Assert.Equal(0, messageNumber);
+    }
+
+    [Fact]
+    public async void SubscriberSendAndOnlyOneException_DeadLetterShouldBeEmpty()
+    {
+      // Given a exchange and queue exists with a message
+      GivenAnExchangeAndQueueHasAMessage();
+
+      // When the subscriber execution create an exception
+      Environment.SetEnvironmentVariable(SubscriberFake.CREATE_EXCEPTION, SubscriberFake.CREATE_EXCEPTION);
+      await WhenConsumeMessagesAsync();
+      Environment.SetEnvironmentVariable(SubscriberFake.CREATE_EXCEPTION, null);
+
+      // Then the retry queue should have 1 message
+
+      var messageNumber = -1;
+
+      await WaitFor(() => Task.Run(() =>
+        {
+          string retryQueue = RabbitMQQueueNameFormatter.DeadLetter(settings.Exchange.Subscribers.First().QueueName);
+          messageNumber = GetMessageCount(settings.Exchange.Subscribers.First().QueueName);
+          return false;
+        })
+      );
+
+      Assert.Equal(0, messageNumber);
+
+    }
+
+    [Fact]
+    public async Task SubscriberSendAndExceptionMoreThanMaxTries_ShoudMessageSentToDeadLetterAsync()
+    {
+      // Given a exchange and queue exists with a message
+      GivenAnExchangeAndQueueHasAMessage();
+
+      // When the subscriber execution create an exception more than MaxRetries (2)
+      Environment.SetEnvironmentVariable(SubscriberFake.CREATE_EXCEPTION, SubscriberFake.CREATE_EXCEPTION);
+      await WhenConsumeMessagesAsync();
+
+      // Then the dead letter queue should have 1 message
+      var messageNumber = 0;
+
+      await WaitFor(() => Task.Run(() =>
+          {
+            string retryQueue = RabbitMQQueueNameFormatter.DeadLetter(settings.Exchange.Subscribers.First().QueueName);
+            messageNumber = GetMessageCount(retryQueue);
+            return 1 == messageNumber;
+          })
+        );
+
+      Assert.Equal(1, messageNumber);
+
+      Environment.SetEnvironmentVariable(SubscriberFake.CREATE_EXCEPTION, null);
+    }
+
+    private void GivenAnExchangeAndQueueHasAMessage()
+    {
       RabbitMQEventBus? rabbitMQEventBus = GetService<EventBus>() as RabbitMQEventBus;
       if (null == rabbitMQEventBus)
         throw new Exception("El servicio RabbitMQEventBus no encontrado");
@@ -19,27 +95,19 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
       DomainEventFake fakeEvent = DomainEventFactory.BuildEventRandom();
 
       rabbitMQEventBus.Publish([fakeEvent]);
+    }
 
-      // When connect to this queue and wait for a message
+    private async Task WhenConsumeMessagesAsync()
+    {
       RabbitMQConsumer? rabbitMQConsumer = GetService<Consumer>() as RabbitMQConsumer;
 
       if (null == rabbitMQConsumer)
         throw new Exception("El servicio RabbitMQConsumer no encontrado");
 
       await rabbitMQConsumer.Consume();
-
-      // Then read the message
-      RabbitMQSettings? settings = GetService<RabbitMQSettings>();
-      if (null == settings)
-        throw new Exception("La sección RabbitMQSettings no encontrada");
-
-      string queue = settings.Exchange.Subscribers.First().QueuName;
-      var messageNumber = GetMessageCount(queue);
-      Assert.Equal(0, messageNumber);
     }
 
-
-    public int GetMessageCount(string queueName)
+    private int GetMessageCount(string queueName)
     {
       RabbitMQConfig? config = GetService<RabbitMQConfig>();
       if (null == config)

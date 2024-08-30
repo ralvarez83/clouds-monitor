@@ -31,7 +31,7 @@ namespace Shared.Domain.Machines.Domain
     public string SuscriptionId { get; }
     public string TenantId { get; }
 
-    public override string EventName() => "lastbackup.created";
+    public override string EventName() => "lastbackupstatus.created";
 
     public override Dictionary<string, string> ToPrimitives()
     {
