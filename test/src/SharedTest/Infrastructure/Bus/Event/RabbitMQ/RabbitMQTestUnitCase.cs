@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using Shared.Domain.Bus.Event;
 using Shared.Infrastructure.Bus.Event.RabbitMQ;
+using SharedTest.Domain;
 
 namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
 {
@@ -32,11 +33,12 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
         services.AddScoped(servicesProvider => rabbitMQSettings);
         services.AddScoped<DomainEventsInformation, DomainEventsInformation>();
         services.AddScoped<SubscribersInformation, SubscribersInformation>();
+        services.AddScoped<UseCaseFake, UseCaseFake>();
 
         services.AddScoped(serviceProvider =>
         {
           IOptions<RabbitMQSettings> rabbitMqParams = Options.Create(rabbitMQSettings);
-          return new RabbitMQConfig(rabbitMqParams, GetService<SubscribersInformation>());
+          return new RabbitMQConfig(rabbitMqParams, (SubscribersInformation)serviceProvider.GetService(typeof(SubscribersInformation)));
         });
         services.AddScoped<RabbitMQPublisher, RabbitMQPublisher>();
         services.AddScoped<EventBus>(serviceProvider =>

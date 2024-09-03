@@ -37,7 +37,7 @@ namespace Shared.Infrastructure.Bus.Event.RabbitMQ
           await subscriberInformation.CreateInstance().On(domainEvent);
           channel.BasicAck(eventArgs.DeliveryTag, false);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
           channel.BasicNack(eventArgs.DeliveryTag, false, true);
         }

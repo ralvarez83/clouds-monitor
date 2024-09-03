@@ -8,7 +8,7 @@ namespace SystemAdministrator.LastBackups.Application.Register
   public class RegisterBackupSubscriber(RegisterBackup registerBackup) : Subscriber<LastBackupStatusDomainEvent>
   {
     private readonly RegisterBackup registerBackup = registerBackup;
-    public override Task On(DomainEvent domainEvent)
+    public Task On(DomainEvent domainEvent)
     {
       Machine machine = MachineWrapper.FromDomainEntity((LastBackupStatusDomainEvent)domainEvent);
       registerBackup.Register(machine);

@@ -71,32 +71,6 @@ namespace Clouds.LastBackups.Infraestructure.Bus.RabbitMQ
                 subscribers.ForEach(
                     subscriber => DeclareQueue(subscriber, ExchangeName, deadLetterExchangeName)
                 );
-
-                // domainEventsInformation.DomainEventTypes.ForEach(
-                //     domainEvent => DeclareQueue(domainEvent, exchange.Name, deadLetterExchangeName));
-
-                // foreach (Subscribers subscriber in exchange.Subscribers)
-                // {
-                //     Dictionary<String, Object> args = new()
-                //     {
-                //         {"x-dead-letter-exchange", deadLetterExchangeName},
-                //         {"x-queue-type", "quorum"},
-                //         {"x-delivery-limit", deliveryLimit}
-                //     };
-                //     var queue = _channel.QueueDeclare(subscriber.QueueName,
-                //     true,
-                //     false,
-                //     false,
-                //     args);
-
-                //     string deadLetterQueueName = RabbitMQQueueNameFormatter.DeadLetter(subscriber.QueueName);
-                //     var deadLetterQueue = _channel.QueueDeclare(deadLetterQueueName, true,
-                //         false,
-                //         false);
-
-                //     _channel.QueueBind(queue, exchange.Name, subscriber.EventName);
-                //     _channel.QueueBind(deadLetterQueue, deadLetterExchangeName, subscriber.EventName);
-                // }
             }
         }
         private void DeclareQueue(SubscriberInformation subscriber, string exchangeName, string deadLetterExchangeName)

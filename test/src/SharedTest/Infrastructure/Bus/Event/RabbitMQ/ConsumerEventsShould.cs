@@ -26,11 +26,13 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
       // When connect to this queue and wait for a message
       await WhenConsumeMessagesAsync();
 
-      // Then read the message
+      // Then read the message and DeadLetter Queue is empty
 
       string queue = subscribersInformation.First().QueueName;
       var messageNumber = GetMessageCount(queue);
       Assert.Equal(0, messageNumber);
+
+      await DeadLetterHasMessages(0);
     }
 
     [Fact]
@@ -44,19 +46,9 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
       await WhenConsumeMessagesAsync();
       Environment.SetEnvironmentVariable(SubscriberFake.CREATE_EXCEPTION, null);
 
-      // Then the retry queue should have 1 message
+      // Then the retry queue should shouldBeEmpty
 
-      var messageNumber = -1;
-
-      await WaitFor(() => Task.Run(() =>
-        {
-          string retryQueue = RabbitMQQueueNameFormatter.DeadLetter(subscribersInformation.First().QueueName);
-          messageNumber = GetMessageCount(subscribersInformation.First().QueueName);
-          return false;
-        })
-      );
-
-      Assert.Equal(0, messageNumber);
+      await DeadLetterHasMessages(0);
 
     }
 
@@ -71,17 +63,8 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
       await WhenConsumeMessagesAsync();
 
       // Then the dead letter queue should have 1 message
-      var messageNumber = 0;
 
-      await WaitFor(() => Task.Run(() =>
-          {
-            string retryQueue = RabbitMQQueueNameFormatter.DeadLetter(subscribersInformation.First().QueueName);
-            messageNumber = GetMessageCount(retryQueue);
-            return 1 == messageNumber;
-          })
-        );
-
-      Assert.Equal(1, messageNumber);
+      await DeadLetterHasMessages(1);
 
       Environment.SetEnvironmentVariable(SubscriberFake.CREATE_EXCEPTION, null);
     }
@@ -120,6 +103,24 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
       }
 
       return numberOfMessages;
+    }
+    private async Task DeadLetterHasMessages(int numberOfMessages)
+    {
+      var messageNumber = -1;
+
+      await WaitFor(() => Task.Run(() =>
+      {
+        string deadLetterQueue = RabbitMQQueueNameFormatter.DeadLetter(subscribersInformation.First().QueueName);
+        messageNumber = GetMessageCount(deadLetterQueue);
+
+        if (0 == numberOfMessages)
+          return false;
+
+        return messageNumber == numberOfMessages;
+      })
+      );
+
+      Assert.Equal(numberOfMessages, messageNumber);
     }
   }
 }
