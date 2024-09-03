@@ -8,13 +8,13 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
 {
   public class ConsumerEventsShould : RabbitMQTestUnitCase
   {
-    private RabbitMQSettings settings;
+    private List<SubscriberInformation> subscribersInformation;
     public ConsumerEventsShould()
     {
-      RabbitMQSettings? settings = GetService<RabbitMQSettings>();
-      if (null == settings)
-        throw new Exception("La sección RabbitMQSettings no encontrada");
-      this.settings = settings;
+      SubscribersInformation? subscribersInformation = GetService<SubscribersInformation>();
+      if (null == subscribersInformation)
+        throw new Exception("La sección SubscribersInformation no encontrada");
+      this.subscribersInformation = subscribersInformation.GetSubscribers();
     }
 
     [Fact]
@@ -28,7 +28,7 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
 
       // Then read the message
 
-      string queue = settings.Exchange.Subscribers.First().QueueName;
+      string queue = subscribersInformation.First().QueueName;
       var messageNumber = GetMessageCount(queue);
       Assert.Equal(0, messageNumber);
     }
@@ -50,8 +50,8 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
 
       await WaitFor(() => Task.Run(() =>
         {
-          string retryQueue = RabbitMQQueueNameFormatter.DeadLetter(settings.Exchange.Subscribers.First().QueueName);
-          messageNumber = GetMessageCount(settings.Exchange.Subscribers.First().QueueName);
+          string retryQueue = RabbitMQQueueNameFormatter.DeadLetter(subscribersInformation.First().QueueName);
+          messageNumber = GetMessageCount(subscribersInformation.First().QueueName);
           return false;
         })
       );
@@ -75,7 +75,7 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
 
       await WaitFor(() => Task.Run(() =>
           {
-            string retryQueue = RabbitMQQueueNameFormatter.DeadLetter(settings.Exchange.Subscribers.First().QueueName);
+            string retryQueue = RabbitMQQueueNameFormatter.DeadLetter(subscribersInformation.First().QueueName);
             messageNumber = GetMessageCount(retryQueue);
             return 1 == messageNumber;
           })

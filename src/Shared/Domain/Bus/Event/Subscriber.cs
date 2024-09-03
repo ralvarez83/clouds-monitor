@@ -1,7 +1,13 @@
 namespace Shared.Domain.Bus.Event
 {
-  public interface Subscriber
+  public abstract class Subscriber<TDomain> where TDomain : DomainEvent
   {
-    Task On(DomainEvent domainEvent);
+    public abstract Task On(DomainEvent domainEvent);
+
+    public string GetEventName()
+    {
+      Type domainEventType = typeof(TDomain);
+      return DomainEventsInformation.GetEventName(domainEventType);
+    }
   }
 }

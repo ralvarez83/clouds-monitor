@@ -5,10 +5,10 @@ using SystemAdministrator.LastBackups.Domain;
 
 namespace SystemAdministrator.LastBackups.Application.Register
 {
-  public class RegisterBackupSubscriber(RegisterBackup registerBackup) : Subscriber
+  public class RegisterBackupSubscriber(RegisterBackup registerBackup) : Subscriber<LastBackupStatusDomainEvent>
   {
     private readonly RegisterBackup registerBackup = registerBackup;
-    public Task On(DomainEvent domainEvent)
+    public override Task On(DomainEvent domainEvent)
     {
       Machine machine = MachineWrapper.FromDomainEntity((LastBackupStatusDomainEvent)domainEvent);
       registerBackup.Register(machine);

@@ -2,11 +2,11 @@ using Shared.Domain.Bus.Event;
 
 namespace SharedTest.Domain
 {
-  public class SubscriberFake : Subscriber
+  public class SubscriberFake : Subscriber<DomainEventFake>
   {
 
     public const string CREATE_EXCEPTION = "CREATE_EXCEPTION";
-    public Task On(DomainEvent domainEvent)
+    public override Task On(DomainEvent domainEvent)
     {
       ExecuteExceptionIfHasEnviromentVariable();
 

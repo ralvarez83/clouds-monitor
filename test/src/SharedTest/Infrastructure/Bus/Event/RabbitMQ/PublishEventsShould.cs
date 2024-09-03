@@ -73,11 +73,11 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
       if (null == config)
         throw new Exception("El servicio RabbitMQConfig no encontrado");
 
-      RabbitMQSettings? settings = GetService<RabbitMQSettings>();
-      if (null == settings)
-        throw new Exception("La sección RabbitMQSettings no encontrada");
+      SubscribersInformation? subscribersInformation = GetService<SubscribersInformation>();
+      if (null == subscribersInformation)
+        throw new Exception("La sección SubscribersInformation no encontrada");
 
-      string queuName = settings.Exchange.Subscribers.First().QueueName;
+      string queuName = subscribersInformation.GetSubscribers().First().QueueName;
 
       IModel channel = config.Channel();
       EventingBasicConsumer consumer = new EventingBasicConsumer(channel);

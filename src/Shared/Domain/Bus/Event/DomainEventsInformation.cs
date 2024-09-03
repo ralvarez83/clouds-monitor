@@ -18,7 +18,7 @@ namespace Shared.Domain.Bus.Event
       return domainEventType;
     }
 
-    private string GetEventName(Type eventType)
+    public static string GetEventName(Type eventType)
     {
       DomainEvent instance = (DomainEvent)Activator.CreateInstance(eventType);
 

@@ -6,30 +6,26 @@ using Shared.Domain.Bus.Event;
 
 namespace Shared.Infrastructure.Bus.Event.RabbitMQ
 {
-  public class RabbitMQConsumer(RabbitMQConfig config, RabbitMQSettings settings, DomainEventJsonDeserializer deserializer, Subscriber suscriber) : Consumer
+  public class RabbitMQConsumer(RabbitMQConfig config, RabbitMQSettings settings, DomainEventJsonDeserializer deserializer, SubscribersInformation subscribersInformation) : Consumer
   {
     private readonly RabbitMQConfig config = config;
     private readonly RabbitMQSettings settings = settings;
     private readonly DomainEventJsonDeserializer deserializer = deserializer;
-    private readonly Subscriber suscriber = suscriber;
+    private readonly SubscribersInformation subscribersInformation = subscribersInformation;
 
     public Task Consume()
     {
-      settings.Exchange.Subscribers.ToList().ForEach(suscriber =>
-      {
-        ConsumeMessages(suscriber.QueueName, suscriber.PrefetchCount);
-        //ConsumeMessages(RabbitMQQueueNameFormatter.Retry(suscriber.QueuName), suscriber.PrefetchCount);
-      });
+      subscribersInformation.GetSubscribers().ToList().ForEach(ConsumeMessages);
 
       return Task.CompletedTask;
     }
 
-    private void ConsumeMessages(string queue, ushort prefetchCount = 10)
+    private void ConsumeMessages(SubscriberInformation subscriberInformation)
     {
       IModel channel = config.Channel();
       EventingBasicConsumer consumer = new EventingBasicConsumer(channel);
 
-      channel.BasicQos(0, prefetchCount, false);
+      channel.BasicQos(0, subscriberInformation.PrefetchCount, false);
 
       consumer.Received += async (model, eventArgs) =>
       {
@@ -38,7 +34,7 @@ namespace Shared.Infrastructure.Bus.Event.RabbitMQ
 
         try
         {
-          await suscriber.On(domainEvent);
+          await subscriberInformation.CreateInstance().On(domainEvent);
           channel.BasicAck(eventArgs.DeliveryTag, false);
         }
         catch (Exception)
@@ -48,7 +44,7 @@ namespace Shared.Infrastructure.Bus.Event.RabbitMQ
 
       };
 
-      var consumerId = channel.BasicConsume(queue, false, consumer);
+      var consumerId = channel.BasicConsume(subscriberInformation.QueueName, false, consumer);
 
     }
   }
