@@ -1,10 +1,8 @@
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
-using Shared.Infrastructure.Bus.Event;
-using Shared.Infrastructure.Bus.Event.RabbitMQ;
 
 // Base on C#-ddd-scheleton by CodelyTV: https://github.com/CodelyTV/csharp-ddd-skeleton
-namespace Clouds.LastBackups.Infraestructure.Bus.RabbitMQ
+namespace Shared.Infrastructure.Bus.Event.RabbitMQ
 {
     public class RabbitMQConfig : IDisposable
     {

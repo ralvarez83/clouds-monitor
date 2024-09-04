@@ -8,19 +8,33 @@ Para su implementación se ha usado la metodología TDD que nos indica que hemos
 
 ## Aprendizajes
 
+### CloudRecoveryLastBackups
+
 - He tenido que reestructurarme en la cabeza el patrón criteria, definía mal los filtros.
 - He aprendido la nueva manera de usar Entity Framework (desde la definición en código de las entidades)
-- A usar MongoDB, cuando me veía que había acabado he tenido que crear una clase de Entidad para poder soportar adecuadamente una clave primaria (¡No sabía que había claves primarias en base de datos no SQL!)
+- A usar MongoDB, cuando creía que había acabado he tenido que crear una clase de Entidad para poder soportar adecuadamente una clave primaria (¡No sabía que había claves primarias en base de datos no SQL!)
 - Me ha costado mucho entender los conceptos de Exchange y Colas de RabbitMQ, ahora ya tiene sentido!!
+
+### RegisterBackupsConsumer
+
+- Me ha costado encajar Exchange, Colas y RoutingKey. Ahora el Exchange de tipo Topic tiene sentido!!!
+- Reflexión: Encontrar e interactuar con clases en tiempo de ejecución sin tener una referencia directa a ellas. Por tanto ahora ya puedo:
+  - Buscar todas las clases que implementen una interfaz _(útil para localizar los Subscriptores)_
+  - Instanciar dichas clases
+  - Invocar un método concreto, atributo y clase genérica que tienes definido _(útil para encontrar el DomainEvent y saber el nombre del evento o RoutingKey al que te quieres subscribir)_
+  - Cambiar valores de propiedades públicas
+  - Incluso cambiar valores de propiedades de sólo lectura y privadas _(¡Cuidado con esto!!! sólo lo he usado para las pruebas automáticas, concretamente para poder lanzar las pruebas de RabbitMQ de manera paralela)_
 
 ## Estado del desarrollo
 
 Componentes:
 
-- Front: _To do_
-- API: _To do_
-- LastBackupSuscriber: _To do_
-- CloudRecoveryLastBackups: **DONE**
+- SystemAdministraor:
+  - Front: _To do_
+  - API: _To do_
+  - RegisterBackupsConsumer: **DONE**
+- Clouds
+  - CloudRecoveryLastBackups: **DONE**
 
 ## Tecnologías Utilizadas
 
@@ -45,7 +59,7 @@ La aplicación consta de los siguientes componentes principales:
 
    - Frontend: Interfaz de usuario de la aplicación
    - API: Maneja las solicitudes del frontend
-   - LastBackupSuscriber: Aplicación de consola que se suscribe a y procesa actualizaciones de backups
+   - RegisterBackupsConsumer: Aplicación de consola que se suscribe a y procesa actualizaciones de backups
 
 2. **Base de Datos**
 
@@ -72,7 +86,9 @@ La aplicación consta de los siguientes componentes principales:
 
 ## Configuración y Uso
 
-Para configurar y ejecutar la aplicación, sigue estos pasos:
+### CloudBackupsRecovery
+
+Para configurar y ejecutar la aplicación **"CloudBackupsRecovery"**, sigue estos pasos:
 
 1. Clona el repositorio en tu máquina local.
 2. Asegúrate de tener instaladas todas las dependencias necesarias (.NET, MongoDB, RabbitMQ).
@@ -131,15 +147,7 @@ Para configurar y ejecutar la aplicación, sigue estos pasos:
     "UserName": "",
     "Password": "",
     "Port": 0,
-    "Exchange": {
-      "Name": "",
-      "Subscribers": [
-        {
-          "QueuName": "",
-          "EventName": ""
-        }
-      ]
-    }
+    "ExchangeName": ""
   }
 }
 ```
@@ -151,7 +159,36 @@ Para configurar y ejecutar la aplicación, sigue estos pasos:
    - Configuración de MongoDB (URI y nombre de la base de datos)
    - Configuración de RabbitMQ (host, usuario, contraseña, puerto, etc.)
 
-5. [Aquí puedes agregar instrucciones adicionales sobre cómo ejecutar la aplicación]
+### RegisterBackupsConsumer
+
+Para configurar y ejecutar la aplicación **"RegisterBackupsConsumer"**, sigue estos pasos:
+
+1. Clona el repositorio en tu máquina local.
+2. Asegúrate de tener instaladas todas las dependencias necesarias (.NET, MongoDB, RabbitMQ).
+3. Crea un archivo `appsettings.json` en el directorio raíz del proyecto con la siguiente configuración:
+
+```json
+{
+  "MongoDBSettings": {
+    "MongoDBURI": "",
+    "DatabaseName": ""
+  },
+  "RabbitMQ": {
+    "HostName": "",
+    "UserName": "",
+    "Password": "",
+    "Port": 0,
+    "DeliveryLimit": 0,
+    "ExchangeName": ""
+  }
+}
+```
+
+4. Completa los campos vacíos en el archivo `appsettings.json` con tus propios valores:
+
+- Configuración de MongoDB (URI y nombre de la base de datos)
+- Configuración de RabbitMQ (host, usuario, contraseña, puerto, etc.)
+  - _El Exchange, Queue y su RoutingKey serán creado la primera vez que se conecte a RabbitMQ si no existe_
 
 Asegúrate de no compartir tus credenciales o información sensible. El archivo `appsettings.json` debe estar incluido en el `.gitignore` para evitar que se suba al repositorio.
 

@@ -4,9 +4,8 @@ using Azure.ResourceManager;
 using Clouds.LastBackups.Domain;
 using Clouds.LastBackups.Infraestructure.Azure;
 using Clouds.LastBackups.Infraestructure.Bus.Command.MediatR;
-using Clouds.LastBackups.Infraestructure.Bus.MediatR.GetCloudLast;
+using Clouds.LastBackups.Infraestructure.Bus.Command.MediatR.UpdateLastBackups;
 using Clouds.LastBackups.Infraestructure.Bus.Query.MediatR;
-using Clouds.LastBackups.Infraestructure.Bus.RabbitMQ;
 using Clouds.LastBackups.Infraestructure.Repository.MongoDB;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +16,7 @@ using Shared.Domain.Bus.Command;
 using Shared.Domain.Bus.Event;
 using Shared.Domain.Bus.Query;
 using Shared.Infrastructure.Bus.Command.MediatR;
+using Shared.Infrastructure.Bus.Event;
 using Shared.Infrastructure.Bus.Event.RabbitMQ;
 using Shared.Infrastructure.Bus.Query.MediatR;
 using Shared.Infrastructure.Repository.MongoDB;
@@ -27,17 +27,17 @@ namespace CloudBackupsRecovery.Extensions.DependencyInjection
   {
     public static IServiceCollection AddInfraestructure(this IServiceCollection services, ConfigurationManager configurationManager)
     {
+
       //Bus Infraestructure: Query & Command
-      services.AddScoped<LastBackupsCloudAccess, AzureBackupsAccess>();
       services.AddScoped<Mediator, Mediator>();
       services.AddScoped<IMediatRCommandDirectoryWrapper, MediatRCommandDirectoryWrapper>();
       services.AddScoped<IMediatRQueryDirectoryWrapper, MediatRQueryDirectoryWrapper>();
       services.AddScoped<CommandBus, MediatRCommandBus>();
       services.AddScoped<QueryBus, MediatRQueryBus>();
-      services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<MediatRGetCloudLastBackupsHandler>());
-      //services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<MediatRUpdateLastBackupsHandler>());
+      services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<MediatRUpdateLastBackupsHandler>());
 
       //Bus Infraestructure: Events
+      services.AddScoped<SubscribersInformation, SubscribersInformation>();
       services.AddScoped<RabbitMQConfig, RabbitMQConfig>();
       services.AddScoped<RabbitMQPublisher, RabbitMQPublisher>();
       services.AddScoped<EventBus, RabbitMQEventBus>();
@@ -55,15 +55,7 @@ namespace CloudBackupsRecovery.Extensions.DependencyInjection
       });
 
       // Repository Cloud
-      // DefaultAzureCredentialOptions options = new DefaultAzureCredentialOptions()
-      // {
-      //   Diagnostics =
-      //       {
-      //           LoggedHeaderNames = { "x-ms-request-id" },
-      //           LoggedQueryParameters = { "api-version" },
-      //           IsLoggingContentEnabled = true
-      //       }
-      // };
+      services.AddScoped<LastBackupsCloudAccess, AzureBackupsAccess>();
       // Add services to the container.
       services.AddAzureClients(static x =>
       {

@@ -1,9 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Clouds.LastBackups.Infraestructure.Azure;
-using Clouds.LastBackups.Infraestructure.Azure.Configuration;
-using Shared.Infrastructure.Enviroment;
 using Shared.Infrastructure.Bus.Event.RabbitMQ;
+using Shared.Infrastructure.Enviroment;
 
 namespace CloudBackupsRecovery.Extensions.DependencyInjection
 {
@@ -13,9 +11,6 @@ namespace CloudBackupsRecovery.Extensions.DependencyInjection
     {
       services.Configure<List<EnvironmentVariables>>(configurationManager.GetSection(EnvironmentVariables.Name));
       services.AddScoped<LoadEnvironmentVariables, LoadEnvironmentVariables>();
-
-      services.Configure<List<Suscriptions>>(configurationManager.GetSection(Suscriptions.Name));
-      services.AddSingleton<AzureEnvConfig, TenantsAccess>();
 
       services.Configure<RabbitMQSettings>(configurationManager.GetSection(RabbitMQSettings.Name));
 

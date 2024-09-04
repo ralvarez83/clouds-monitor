@@ -1,5 +1,4 @@
 using System.Reflection;
-using Clouds.LastBackups.Infraestructure.Bus.RabbitMQ;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;

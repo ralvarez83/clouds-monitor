@@ -1,7 +1,4 @@
-
-using System.Collections.Immutable;
 using System.Text;
-using Clouds.LastBackups.Infraestructure.Bus.RabbitMQ;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Shared.Domain.Bus.Event;

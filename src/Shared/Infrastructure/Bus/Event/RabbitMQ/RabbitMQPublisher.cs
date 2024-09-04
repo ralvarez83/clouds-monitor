@@ -1,5 +1,4 @@
 using System.Text;
-using Clouds.LastBackups.Infraestructure.Bus.RabbitMQ;
 using RabbitMQ.Client;
 
 // Base on C#-ddd-scheleton by CodelyTV: https://github.com/CodelyTV/csharp-ddd-skeleton
@@ -18,7 +17,7 @@ namespace Shared.Infrastructure.Bus.Event.RabbitMQ
     public void Publish(string exchangeName, string eventName, byte[] body, int reDelivery = 0)
     {
       IModel channel = config.Channel();
-      channel.ExchangeDeclare(exchangeName, ExchangeType.Topic);
+      //channel.ExchangeDeclare(exchangeName, ExchangeType.Topic);
 
       channel.BasicPublish(exchange: exchangeName,
                            routingKey: eventName,
