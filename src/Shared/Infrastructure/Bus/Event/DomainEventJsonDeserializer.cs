@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Shared.Domain.ValueObjects;
+using Shared.Infrastructure.Bus.Event;
 using System.Reflection;
 
 // Base on C#-ddd-scheleton by CodelyTV: https://github.com/CodelyTV/csharp-ddd-skeleton

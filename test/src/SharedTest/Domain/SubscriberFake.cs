@@ -6,13 +6,11 @@ namespace SharedTest.Domain
   {
 
     public const string CREATE_EXCEPTION = "CREATE_EXCEPTION";
-    private readonly UseCaseFake useCaseFake;
 
     public SubscriberFake() { }
 
     public SubscriberFake(UseCaseFake useCaseFake)
     {
-      this.useCaseFake = useCaseFake;
     }
 
 

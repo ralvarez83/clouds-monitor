@@ -1,8 +1,7 @@
-using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
-using RabbitMQ.Client.Events;
+using Shared.Domain.Bus.Event;
 
-namespace Shared.Domain.Bus.Event
+namespace Shared.Infrastructure.Bus.Event
 {
   public class SubscribersInformation(IServiceProvider serviceProvider)
   {

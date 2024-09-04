@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
-using Shared.Domain.Bus.Event;
+using Shared.Infrastructure.Bus.Event;
 using Shared.Infrastructure.Bus.Event.RabbitMQ;
 
 // Base on C#-ddd-scheleton by CodelyTV: https://github.com/CodelyTV/csharp-ddd-skeleton

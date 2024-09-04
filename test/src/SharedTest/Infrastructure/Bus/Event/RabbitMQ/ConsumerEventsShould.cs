@@ -1,6 +1,7 @@
 using Clouds.LastBackups.Infraestructure.Bus.RabbitMQ;
 using RabbitMQ.Client;
 using Shared.Domain.Bus.Event;
+using Shared.Infrastructure.Bus.Event;
 using Shared.Infrastructure.Bus.Event.RabbitMQ;
 using SharedTest.Domain;
 

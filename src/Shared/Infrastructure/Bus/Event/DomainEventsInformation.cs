@@ -1,5 +1,7 @@
 
-namespace Shared.Domain.Bus.Event
+using Shared.Domain.Bus.Event;
+
+namespace Shared.Infrastructure.Bus.Event
 {
   public class DomainEventsInformation
   {

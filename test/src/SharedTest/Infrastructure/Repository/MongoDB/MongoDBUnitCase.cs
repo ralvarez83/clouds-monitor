@@ -8,7 +8,7 @@ namespace Shared.Infrastructure.MongoDB
 {
   public abstract class MongoDBUnitCase<TContext> : InfrastructureTestCase, IDisposable where TContext : DbContext
   {
-    protected MongoDBSettings mongoDBSettings;
+    protected MongoDBSettings? mongoDBSettings;
 
     protected string dataBaseName;
 
@@ -19,8 +19,11 @@ namespace Shared.Infrastructure.MongoDB
 
     protected void DropDataBase()
     {
-      var client = new MongoClient(mongoDBSettings.MongoDBURI);
-      client.DropDatabase(dataBaseName);
+      if (null != mongoDBSettings)
+      {
+        var client = new MongoClient(mongoDBSettings.MongoDBURI);
+        client.DropDatabase(dataBaseName);
+      }
     }
 
     protected abstract TContext GetTemporalDBContext();

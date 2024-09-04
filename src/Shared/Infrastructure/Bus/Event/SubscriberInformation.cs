@@ -1,9 +1,8 @@
 using System.Reflection;
-using System.Reflection.Emit;
-using System.Reflection.Metadata.Ecma335;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Domain.Bus.Event;
 
-namespace Shared.Domain.Bus.Event
+namespace Shared.Infrastructure.Bus.Event
 {
   public class SubscriberInformation
   {

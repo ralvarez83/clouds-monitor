@@ -12,8 +12,8 @@ namespace SharedTest.Domain
       Date = date;
     }
     public DomainEventFake() { }
-    public string Name { get; set; }
-    public SimpleDate Date { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public SimpleDate Date { get; set; } = SimpleDate.Now();
 
     public override string EventName() => "test.create";
 
