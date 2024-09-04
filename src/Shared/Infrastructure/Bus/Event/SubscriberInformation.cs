@@ -9,10 +9,10 @@ namespace Shared.Infrastructure.Bus.Event
     private Type subscriberType;
     private IServiceScope serviceScope;
 
-    public Type SubscriberType { get; }
-    public string QueueName { get; }
-    public string EventName { get; }
-    public ushort PrefetchCount { get; }
+    public Type SubscriberType { get; private set; }
+    public string QueueName { get; private set; }
+    public string EventName { get; private set; }
+    public ushort PrefetchCount { get; private set; }
     public SubscriberInformation(Type type, IServiceScope serviceScope, ushort prefetchCount = 10)
     {
       SubscriberType = type;

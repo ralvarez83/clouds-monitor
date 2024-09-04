@@ -1,3 +1,4 @@
+using System.Reflection;
 using Clouds.LastBackups.Infraestructure.Bus.RabbitMQ;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,15 +27,31 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
                 .Build();
 
         RabbitMQSettings? rabbitMQSettings = configuration.GetSection(RabbitMQSettings.Name).Get<RabbitMQSettings>();
-        int postNames = TimeSpan.FromTicks(DateTime.Now.Ticks).Milliseconds;
+        string postNames = Guid.NewGuid().ToString();
         if (null == rabbitMQSettings)
           throw new Exception("RabbitMQSettings not found");
 
         rabbitMQSettings.ExchangeName += postNames;
         services.AddScoped(servicesProvider => rabbitMQSettings);
         services.AddScoped<DomainEventsInformation, DomainEventsInformation>();
-        services.AddScoped<SubscribersInformation, SubscribersInformation>();
+        // services.AddScoped<SubscribersInformation, SubscribersInformation>();
         services.AddScoped<UseCaseFake, UseCaseFake>();
+
+        services.AddScoped(serviceProvider =>
+        {
+          SubscribersInformation subscribersInformation = new SubscribersInformation(serviceProvider);
+          IServiceScope scope = serviceProvider.CreateScope();
+          SubscriberInformation subscriber = new SubscriberInformation(typeof(SubscriberFake), scope);
+          PropertyInfo queueProperty = typeof(SubscriberInformation).GetProperty("QueueName");
+          queueProperty.SetValue(subscriber, $"{subscriber.QueueName}.{postNames}");
+
+          List<SubscriberInformation> subscribers = new List<SubscriberInformation> { subscriber };
+
+          PropertyInfo subscriberListProperty = typeof(SubscribersInformation).GetProperty("subscribers", BindingFlags.Instance | BindingFlags.NonPublic);
+          subscriberListProperty.SetValue(subscribersInformation, subscribers);
+
+          return subscribersInformation;
+        });
 
         services.AddScoped(serviceProvider =>
         {
@@ -109,6 +126,7 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
       channel.ExchangeDelete(settings.ExchangeName);
       channel.ExchangeDelete(exchangeDeadLetterName);
 
+      List<SubscriberInformation> subscribers = subscribersInformation.GetSubscribers();
       foreach (SubscriberInformation subscriber in subscribersInformation.GetSubscribers())
       {
         string deadLetterQueueName = RabbitMQQueueNameFormatter.DeadLetter(subscriber.QueueName);

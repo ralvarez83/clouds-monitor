@@ -10,8 +10,8 @@ namespace Clouds.LastBackups.Infraestructure.Bus.RabbitMQ
     {
 
         private ConnectionFactory ConnectionFactory { get; }
-        private static IConnection _connection { get; set; }
-        private static IModel _channel { get; set; }
+        private IConnection _connection { get; set; }
+        private IModel _channel { get; set; }
         // private Exchanges exchange { get; }
         public string ExchangeName { get; }
         private int deliveryLimit { get; }

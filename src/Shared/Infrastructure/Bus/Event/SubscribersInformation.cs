@@ -7,7 +7,7 @@ namespace Shared.Infrastructure.Bus.Event
   {
     private readonly IServiceProvider serviceProvider = serviceProvider;
 
-    private static List<SubscriberInformation> subscribers { get; set; }
+    private List<SubscriberInformation> subscribers { get; set; } = [];
 
     public List<SubscriberInformation> GetSubscribers()
     {
