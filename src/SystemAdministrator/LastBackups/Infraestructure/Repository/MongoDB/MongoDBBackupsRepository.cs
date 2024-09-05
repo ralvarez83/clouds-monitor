@@ -9,6 +9,11 @@ namespace SystemAdministrator.LastBackups.Infrastructure.Repository.MongoDB
   {
     private BackupsContext dbContext = backupContext;
 
+    public Task<ImmutableList<Machine>> GetAll()
+    {
+      throw new NotImplementedException();
+    }
+
     public async Task<Machine?> GetById(MachineId id)
     {
       BackupsEntity? entity = await dbContext.Backups.FindAsync(id.Value);

@@ -11,6 +11,11 @@ namespace SystemAdministrationTest.Backups.Infraestructure.InMemoryDB
     {
         private ApplicationDbContext _appDBContext = appDBContext;
 
+        public Task<ImmutableList<Machine>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<Machine?> GetById(MachineId id)
         {
             throw new NotImplementedException();

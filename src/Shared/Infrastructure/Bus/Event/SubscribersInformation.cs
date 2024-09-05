@@ -23,9 +23,9 @@ namespace Shared.Infrastructure.Bus.Event
       Type subscriberType = typeof(Subscriber<>);
       IServiceScope scope = serviceProvider.CreateScope();
 
-      Type[] shared = AppDomain.CurrentDomain.GetAssemblies()
-       .Where(assembles => assembles.FullName.Contains("Shared"))
-       .SelectMany(assembles => assembles.GetTypes()).ToArray<Type>();
+      // Type[] shared = AppDomain.CurrentDomain.GetAssemblies()
+      //  .Where(assembles => assembles.FullName.Contains("Shared"))
+      //  .SelectMany(assembles => assembles.GetTypes()).ToArray<Type>();
 
       List<Type> subscribersType = AppDomain.CurrentDomain.GetAssemblies()
       .SelectMany(assembles => assembles.GetTypes())

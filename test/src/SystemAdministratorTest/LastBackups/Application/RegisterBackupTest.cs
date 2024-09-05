@@ -122,5 +122,35 @@ namespace SystemAdministrationTest.LastBackup.Application
                 }
         );
     }
+    private void ShouldHaveSave(int? times = null)
+    {
+      if (times.HasValue)
+      {
+        if (times.Value == 0)
+          _repository.Verify(_ => _.Save(It.IsAny<Machine>()), Times.Never);
+        else
+          _repository.Verify(_ => _.Save(It.IsAny<Machine>()), Times.Exactly(times.Value));
+      }
+      else
+      {
+        _repository.Verify(_ => _.Save(It.IsAny<Machine>()), Times.AtLeastOnce());
+      }
+    }
+    private void ShouldHaveSaveWithBackupData(Machine backupSaved)
+    {
+
+      _repository.Verify(_ => _.Save(It.Is<Machine>(
+        (backup) => backup.MachineId.Value == backupSaved.MachineId.Value &&
+                    backup.MachineName.Value == backupSaved.MachineName.Value &&
+                    backup.LastBackupTime.ToString() == backupSaved.LastBackupTime.ToString() &&
+                    backup.LastBackupType.Equals(backup.LastBackupType) &&
+                    backup.LastBackupStatus.Equals(backupSaved.LastBackupStatus) &&
+                    backup.LastRecoveryPoint.Equals(backupSaved.LastRecoveryPoint) &&
+                    backup.VaultId.Value == backupSaved.VaultId.Value &&
+                    backup.SuscriptionId.Value == backupSaved.SuscriptionId.Value &&
+                    backup.TenantId.Value == backupSaved.TenantId.Value
+      )), Times.Exactly(1));
+
+    }
   }
 }

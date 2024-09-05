@@ -10,6 +10,7 @@ using Clouds.LastBackups.Application.Dtos.Wrappers;
 using Shared.Domain.Criteria;
 using Shared.Domain.Criteria.Filters;
 using Shared.Domain.ValueObjects;
+using Shared.Domain.Bus.Event;
 
 namespace CloudsTest.LastBackups.Application.RecoverLastBackups
 {
@@ -121,6 +122,32 @@ namespace CloudsTest.LastBackups.Application.RecoverLastBackups
                     () => backupsInCloud.Where(backup => criteria.filters.FiltersFiled.First().value.Contains(backup.MachineId.Value)).ToImmutableList());
                 }
         );
+    }
+
+
+    private void ShouldHavePublished(int items, int times)
+    {
+      _eventBusMok.Verify(x => x.Publish(It.Is<List<DomainEvent>>(list => list.Count == items)), Times.Exactly(times));
+    }
+
+    private void ShouldHaveNotPublished()
+    {
+      _eventBusMok.Verify(x => x.Publish(It.IsAny<List<DomainEvent>>()), Times.Never);
+    }
+
+    private void ShouldHaveSave(int? times = null)
+    {
+      if (times.HasValue)
+      {
+        if (times.Value == 0)
+          _repository.Verify(_ => _.Save(It.IsAny<LastBackupStatus>()), Times.Never);
+        else
+          _repository.Verify(_ => _.Save(It.IsAny<LastBackupStatus>()), Times.Exactly(times.Value));
+      }
+      else
+      {
+        _repository.Verify(_ => _.Save(It.IsAny<LastBackupStatus>()), Times.AtLeastOnce());
+      }
     }
   }
 }

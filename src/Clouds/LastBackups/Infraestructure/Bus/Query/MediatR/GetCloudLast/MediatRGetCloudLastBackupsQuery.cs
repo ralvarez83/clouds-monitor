@@ -3,7 +3,7 @@ using Clouds.LastBackups.Application.Dtos;
 using Clouds.LastBackups.Application.GetCloudLast;
 using MediatR;
 using QueryDomain = Shared.Domain.Bus.Query.Query;
-using Shared.Shared.Infraestructure.Bus.Query.MediatR;
+using Shared.Infrastructure.Bus.Query.MediatR;
 
 namespace Clouds.LastBackups.Infraestructure.Bus.MediatR.GetCloudLast
 {

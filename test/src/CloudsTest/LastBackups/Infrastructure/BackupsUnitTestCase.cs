@@ -16,29 +16,5 @@ namespace CloudsTest.LastBackups.Infrastructure
 
     protected Mock<EventBus> _eventBusMok = new Mock<EventBus>();
 
-    public void ShouldHavePublished(int items, int times)
-    {
-      _eventBusMok.Verify(x => x.Publish(It.Is<List<DomainEvent>>(list => list.Count == items)), Times.Exactly(times));
-    }
-
-    public void ShouldHaveNotPublished()
-    {
-      _eventBusMok.Verify(x => x.Publish(It.IsAny<List<DomainEvent>>()), Times.Never);
-    }
-
-    public void ShouldHaveSave(int? times = null)
-    {
-      if (times.HasValue)
-      {
-        if (times.Value == 0)
-          _repository.Verify(_ => _.Save(It.IsAny<LastBackupStatus>()), Times.Never);
-        else
-          _repository.Verify(_ => _.Save(It.IsAny<LastBackupStatus>()), Times.Exactly(times.Value));
-      }
-      else
-      {
-        _repository.Verify(_ => _.Save(It.IsAny<LastBackupStatus>()), Times.AtLeastOnce());
-      }
-    }
   }
 }
