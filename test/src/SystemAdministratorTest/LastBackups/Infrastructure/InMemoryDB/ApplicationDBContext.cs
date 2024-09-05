@@ -5,7 +5,7 @@ namespace SystemAdministrationTest.Backups.Infraestructure.InMemoryDB
 {
   public class ApplicationDbContext : DbContext
   {
-    public DbSet<BackupDto> Backups { get; set; }
+    public DbSet<MachineDto> Backups { get; set; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {

@@ -6,7 +6,7 @@ namespace SystemAdministrator.LastBackups.Application.Dtos.Wrappers;
 
 public class MachineWrapper
 {
-  public static Machine FromDto(BackupDto backup)
+  public static Machine FromDto(MachineDto backup)
   {
     return new Machine(
       machineId: new MachineId(backup.machineId),

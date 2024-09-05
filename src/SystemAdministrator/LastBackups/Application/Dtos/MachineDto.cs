@@ -1,6 +1,6 @@
 namespace SystemAdministrator.LastBackups.Application.Dtos;
 
-public record BackupDto(
+public record MachineDto(
                           string machineId,
                           string machineName,
                           string status,

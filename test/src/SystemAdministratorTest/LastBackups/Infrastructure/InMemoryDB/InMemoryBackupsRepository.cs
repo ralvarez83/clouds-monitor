@@ -23,7 +23,7 @@ namespace SystemAdministrationTest.Backups.Infraestructure.InMemoryDB
 
         public void Save(Machine backup)
         {
-            BackupDto backupDto = MachineDtoWrapper.FromDomain(backup);
+            MachineDto backupDto = MachineDtoWrapper.FromDomain(backup);
             _appDBContext.Add(backupDto);
             _appDBContext.SaveChanges();
         }

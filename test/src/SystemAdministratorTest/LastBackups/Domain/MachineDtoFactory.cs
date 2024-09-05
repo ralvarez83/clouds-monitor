@@ -6,17 +6,17 @@ namespace SystemAdministrationTest.Backups.Domain;
 
 public class MachineDtoFactory
 {
-  public static ImmutableList<BackupDto> BuildArrayOfBackupDtosRandom()
+  public static ImmutableList<MachineDto> BuildArrayOfBackupDtosRandom()
   {
     return MachineFactory.BuildArrayOfBackupsRandom().Select(MachineDtoWrapper.FromDomain).ToImmutableList();
   }
 
-  public static ImmutableList<BackupDto> BuildArrayOfBackupDtosEmpty()
+  public static ImmutableList<MachineDto> BuildArrayOfBackupDtosEmpty()
   {
-    return new List<BackupDto>().ToImmutableList();
+    return new List<MachineDto>().ToImmutableList();
   }
 
-  public static BackupDto BuildBackupDtoRandom()
+  public static MachineDto BuildBackupDtoRandom()
   {
     return MachineDtoWrapper.FromDomain(MachineFactory.BuildBackupRandom());
   }

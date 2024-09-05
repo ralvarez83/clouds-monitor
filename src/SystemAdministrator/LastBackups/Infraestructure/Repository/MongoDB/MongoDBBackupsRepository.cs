@@ -11,7 +11,7 @@ namespace SystemAdministrator.LastBackups.Infrastructure.Repository.MongoDB
 
     public Task<ImmutableList<Machine>> GetAll()
     {
-      throw new NotImplementedException();
+      return Task.Run(() => dbContext.Backups.Select(BackupsEntity.ToDomain).ToImmutableList());
     }
 
     public async Task<Machine?> GetById(MachineId id)

@@ -31,7 +31,7 @@ public sealed class GetLastBackups : Feature
   public async Task Then_Should_Return_Not_Empty_Backup_List()
   {
     Assert.NotNull(this._response);
-    BackupDto[] backups = await this._response.Content.ReadAsAsync<BackupDto[]>();
+    MachineDto[] backups = await this._response.Content.ReadAsAsync<MachineDto[]>();
     Assert.NotEmpty(backups);
   }
 

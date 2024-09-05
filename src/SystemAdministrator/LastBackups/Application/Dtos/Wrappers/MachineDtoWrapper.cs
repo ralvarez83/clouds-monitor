@@ -4,9 +4,9 @@ namespace SystemAdministrator.LastBackups.Application.Dtos.Wrappers;
 
 public class MachineDtoWrapper
 {
-  public static BackupDto FromDomain(Machine backup)
+  public static MachineDto FromDomain(Machine backup)
   {
-    return new BackupDto(
+    return new MachineDto(
       machineId: backup.MachineId.Value,
       machineName: backup.MachineName.Value,
       status: backup.LastBackupStatus.ToString(),
