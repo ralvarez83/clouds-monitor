@@ -7,9 +7,6 @@ namespace WebAPI.Extensions.DependencyInjection
   {
     public static IServiceCollection AddConfiguration (this IServiceCollection services, ConfigurationManager configurationManager){
 
-      // services.Configure<List<Suscriptions>>(configurationManager.GetSection(Suscriptions.Name));
-      // services.AddSingleton<AzureEnvConfig, TenantsAccess>();
-
       return services;
     }
   }

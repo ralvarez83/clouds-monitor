@@ -31,7 +31,7 @@ Componentes:
 
 - SystemAdministraor:
   - Front: _To do_
-  - API: _To do_
+  - API: **DONE**
   - RegisterBackupsConsumer: **DONE**
 - Clouds
   - CloudRecoveryLastBackups: **DONE**
@@ -189,6 +189,29 @@ Para configurar y ejecutar la aplicación **"RegisterBackupsConsumer"**, sigue e
 - Configuración de MongoDB (URI y nombre de la base de datos)
 - Configuración de RabbitMQ (host, usuario, contraseña, puerto, etc.)
   - _El Exchange, Queue y su RoutingKey serán creado la primera vez que se conecte a RabbitMQ si no existe_
+
+Asegúrate de no compartir tus credenciales o información sensible. El archivo `appsettings.json` debe estar incluido en el `.gitignore` para evitar que se suba al repositorio.
+
+### Web API
+
+Para configurar y ejecutar la aplicación **"RegisterBackupsConsumer"**, sigue estos pasos:
+
+1. Clona el repositorio en tu máquina local.
+2. Asegúrate de tener instaladas todas las dependencias necesarias (.NET y MongoDB).
+3. Crea un archivo `appsettings.json` en el directorio raíz del proyecto con la siguiente configuración:
+
+```json
+{
+  "MongoDBSettings": {
+    "MongoDBURI": "",
+    "DatabaseName": ""
+  }
+}
+```
+
+4. Completa los campos vacíos en el archivo `appsettings.json` con tus propios valores:
+
+- Configuración de MongoDB (URI y nombre de la base de datos)
 
 Asegúrate de no compartir tus credenciales o información sensible. El archivo `appsettings.json` debe estar incluido en el `.gitignore` para evitar que se suba al repositorio.
 

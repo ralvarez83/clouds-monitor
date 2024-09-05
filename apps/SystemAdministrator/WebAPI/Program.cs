@@ -29,7 +29,7 @@ DefaultAzureCredentialOptions options = new DefaultAzureCredentialOptions()
 
 builder.Services.AddConfiguration(builder.Configuration);
 builder.Services.AddApplication();
-builder.Services.AddInfraestructure();
+builder.Services.AddInfraestructure(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
