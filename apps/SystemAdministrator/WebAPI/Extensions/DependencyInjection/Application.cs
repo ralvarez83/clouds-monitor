@@ -1,6 +1,6 @@
 
-using SystemAdministrator.LastBackups.Application.GetAll;
-using SystemAdministrator.LastBackups.Domain;
+using SystemAdministrator.Machines.Application.GetAll;
+using SystemAdministrator.Machines.Domain;
 
 namespace WebAPI.Extensions.DependencyInjection
 {

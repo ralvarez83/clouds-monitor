@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using SystemAdministrator.LastBackups.Application.Register;
+using SystemAdministrator.Machines.Application.RegisterLastBackups;
 
 namespace CloudBackupsRecovery.Extensions.DependencyInjection
 {
@@ -7,7 +7,7 @@ namespace CloudBackupsRecovery.Extensions.DependencyInjection
   {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-      services.AddScoped<RegisterBackup, RegisterBackup>();
+      services.AddScoped<RegisterLastBackup, RegisterLastBackup>();
 
       return services;
     }

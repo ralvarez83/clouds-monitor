@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Shared.Domain.Bus.Command;
 using Shared.Infrastructure.Bus.Event.RabbitMQ;
 
 namespace RegisterBackupsConsumer
@@ -26,7 +25,6 @@ namespace RegisterBackupsConsumer
 
         private void OnStarted()
         {
-            _logger.LogInformation("Consumer is running");
             // while (continueConsuming) ;
         }
 
@@ -40,6 +38,8 @@ namespace RegisterBackupsConsumer
         Task IHostedService.StartAsync(CancellationToken cancellationToken)
         {
             // _logger.LogInformation("2. StartAsync has been called.");
+
+            _logger.LogInformation("Consumer is running");
             _consumer.Consume();
 
             return Task.CompletedTask;

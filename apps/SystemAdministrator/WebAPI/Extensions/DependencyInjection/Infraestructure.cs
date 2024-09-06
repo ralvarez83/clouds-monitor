@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Domain.Bus.Query;
 using Shared.Infrastructure.Bus.Query.MediatR;
 using Shared.Infrastructure.Repository.MongoDB;
-using SystemAdministrator.LastBackups.Domain;
-using SystemAdministrator.LastBackups.Infrastructure.Bus.Query.MediatR.GetAll;
-using SystemAdministrator.LastBackups.Infrastructure.Repository.MongoDB;
+using SystemAdministrator.Machines.Domain;
+using SystemAdministrator.Machines.Infrastructure.Bus.Query.MediatR.GetAll;
+using SystemAdministrator.Machines.Infrastructure.Repository.MongoDB;
 
 namespace WebAPI.Extensions.DependencyInjection
 {
@@ -21,9 +21,9 @@ namespace WebAPI.Extensions.DependencyInjection
       services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<MediatRGetCloudLastBackupsHandler>());
 
       // Repository DataBase
-      services.AddScoped<LastBackupsRepository, MongoDBBackupsRepository>();
+      services.AddScoped<MachinesRepository, MongoDBMachinesRepository>();
 
-      services.AddDbContext<BackupsContext>(options =>
+      services.AddDbContext<MachinesContext>(options =>
       {
         MongoDBSettings? mongoDBSettings = configurationManager.GetSection(MongoDBSettings.Name).Get<MongoDBSettings>();
         if (null == mongoDBSettings)

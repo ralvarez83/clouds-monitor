@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,8 +5,8 @@ using Shared.Domain.Bus.Event;
 using Shared.Infrastructure.Bus.Event;
 using Shared.Infrastructure.Bus.Event.RabbitMQ;
 using Shared.Infrastructure.Repository.MongoDB;
-using SystemAdministrator.LastBackups.Domain;
-using SystemAdministrator.LastBackups.Infrastructure.Repository.MongoDB;
+using SystemAdministrator.Machines.Domain;
+using SystemAdministrator.Machines.Infrastructure.Repository.MongoDB;
 
 namespace CloudBackupsRecovery.Extensions.DependencyInjection
 {
@@ -23,9 +22,9 @@ namespace CloudBackupsRecovery.Extensions.DependencyInjection
       services.AddScoped<RabbitMQConsumer, RabbitMQConsumer>();
 
       // Repository DataBase
-      services.AddScoped<LastBackupsRepository, MongoDBBackupsRepository>();
+      services.AddScoped<MachinesRepository, MongoDBMachinesRepository>();
 
-      services.AddDbContext<BackupsContext>(options =>
+      services.AddDbContext<MachinesContext>(options =>
       {
         MongoDBSettings? mongoDBSettings = configurationManager.GetSection(MongoDBSettings.Name).Get<MongoDBSettings>();
         if (null == mongoDBSettings)
