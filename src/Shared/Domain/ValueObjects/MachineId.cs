@@ -1,5 +1,3 @@
-using Shared.Domain.ValueObjects;
-
 namespace Shared.Domain.ValueObjects;
 
 public class MachineId(string value) : ValueObjectsBase

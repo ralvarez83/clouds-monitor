@@ -1,4 +1,3 @@
-using System;
 using Shared.Domain.ValueObjects;
 
 namespace Shared.Domain.Bus.Event;

@@ -11,7 +11,6 @@ namespace Shared.Infrastructure.Bus.Event.RabbitMQ
     public string Password { get; set; } = "";
     public int Port { get; set; }
     public int DeliveryLimit { get; set; }
-    // public Exchanges? Exchange { get; set; }
     public string ExchangeName { get; set; } = "";
     public const string Name = "RabbitMQ";
 

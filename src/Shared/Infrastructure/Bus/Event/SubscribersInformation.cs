@@ -30,7 +30,6 @@ namespace Shared.Infrastructure.Bus.Event
       List<Type> subscribersType = AppDomain.CurrentDomain.GetAssemblies()
       .SelectMany(assembles => assembles.GetTypes())
       .Where(type => null != type.GetInterface(subscriberType.Name) && !type.IsAbstract).ToList();
-      // .Where(type => null != type.BaseType && type.BaseType.Name.Equals(subscriberType.Name) && !type.IsAbstract).ToList();
 
       return subscribersType.Select(subscriberType => new SubscriberInformation(subscriberType, scope)).ToList();
     }

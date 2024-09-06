@@ -24,8 +24,6 @@ namespace Shared.Infrastructure.Bus.Event.RabbitMQ
       IModel channel = config.Channel();
       EventingBasicConsumer consumer = new EventingBasicConsumer(channel);
 
-      //channel.BasicQos(0, subscriberInformation.PrefetchCount, false);
-
       consumer.Received += async (model, eventArgs) =>
       {
         string message = Encoding.UTF8.GetString(eventArgs.Body.Span);

@@ -10,18 +10,9 @@ namespace Shared.Infrastructure.Bus.Event.RabbitMQ
         private ConnectionFactory ConnectionFactory { get; }
         private IConnection _connection { get; set; }
         private IModel _channel { get; set; }
-        // private Exchanges exchange { get; }
         public string ExchangeName { get; }
         private int deliveryLimit { get; }
         private List<SubscriberInformation> subscribers { get; set; }
-
-        // public string ExchangeName
-        // {
-        //     get
-        //     {
-        //         return (null != exchange) ? exchange.Name : string.Empty;
-        //     }
-        // }
 
         public RabbitMQConfig(IOptions<RabbitMQSettings> rabbitMqParams, SubscribersInformation subscribersInformation)
         {
