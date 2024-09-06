@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 using Clouds.LastBackups.Application.Dtos;
 using Clouds.LastBackups.Application.Dtos.Transformation;
-using Clouds.LastBackups.Application.GetCloudLast;
+using Clouds.LastBackups.Application.GetCloudLastBackups;
 using Clouds.LastBackups.Domain;
 using CloudsTest.LastBackups.Domain;
 using CloudsTest.LastBackups.Infrastructure;

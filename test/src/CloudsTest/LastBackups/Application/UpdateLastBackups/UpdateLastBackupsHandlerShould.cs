@@ -5,7 +5,7 @@ using CloudsTest.LastBackups.Domain;
 using CloudsTest.LastBackups.Infrastructure;
 using Clouds.LastBackups.Domain;
 using Clouds.LastBackups.Application.UpdateLastBackups;
-using Clouds.LastBackups.Application.GetCloudLast;
+using Clouds.LastBackups.Application.GetCloudLastBackups;
 using Clouds.LastBackups.Application.Dtos.Wrappers;
 using Shared.Domain.Criteria;
 using Shared.Domain.Criteria.Filters;

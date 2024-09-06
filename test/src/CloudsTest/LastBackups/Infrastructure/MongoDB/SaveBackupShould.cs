@@ -1,5 +1,5 @@
 using Clouds.LastBackups.Domain;
-using Clouds.LastBackups.Infraestructure.Repository.MongoDB;
+using Clouds.LastBackups.Infrastructure.Repository.MongoDB;
 using CloudsTest.LastBackups.Domain;
 using Shared.Domain.ValueObjects;
 

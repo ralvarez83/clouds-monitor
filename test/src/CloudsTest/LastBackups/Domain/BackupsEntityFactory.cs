@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 using AutoFixture;
 using Clouds.LastBackups.Application.Dtos;
 using Clouds.LastBackups.Application.Dtos.Transformation;
-using Clouds.LastBackups.Infraestructure.Repository.MongoDB;
+using Clouds.LastBackups.Infrastructure.Repository.MongoDB;
 
 namespace CloudsTest.LastBackups.Domain;
 

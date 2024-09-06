@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Clouds.LastBackups.Infraestructure.Azure;
-using Clouds.LastBackups.Infraestructure.Azure.Configuration;
+using Clouds.LastBackups.Infrastructure.Azure;
+using Clouds.LastBackups.Infrastructure.Azure.Configuration;
 using Shared.Infrastructure.Enviroment;
 using Shared.Infrastructure.Bus.Event.RabbitMQ;
 

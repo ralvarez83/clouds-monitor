@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 using Clouds.LastBackups.Application.Dtos;
-using Clouds.LastBackups.Infraestructure.Repository.MongoDB;
+using Clouds.LastBackups.Infrastructure.Repository.MongoDB;
 using CloudsTest.LastBackups.Domain;
 using CriteriaDomian = Shared.Domain.Criteria.Criteria;
 using Shared.Domain.Criteria.Filters;

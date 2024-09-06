@@ -1,7 +1,7 @@
 using System.Collections.Immutable;
 using Clouds.LastBackups.Application.Dtos;
 using Clouds.LastBackups.Application.Dtos.Wrappers;
-using Clouds.LastBackups.Application.GetCloudLast;
+using Clouds.LastBackups.Application.GetCloudLastBackups;
 using Clouds.LastBackups.Domain;
 using Shared.Domain.Bus.Event;
 using Shared.Domain.Bus.Query;

@@ -1,4 +1,4 @@
-using Clouds.LastBackups.Infraestructure.Repository.MongoDB;
+using Clouds.LastBackups.Infrastructure.Repository.MongoDB;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using Shared.Infrastructure.MongoDB;

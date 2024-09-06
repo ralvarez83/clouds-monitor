@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Clouds.LastBackups.Domain;
-using Clouds.LastBackups.Infraestructure.Azure;
+using Clouds.LastBackups.Infrastructure.Azure;
 using Clouds.LastBackups.Application.UpdateLastBackups;
-using Clouds.LastBackups.Application.GetCloudLast;
+using Clouds.LastBackups.Application.GetCloudLastBackups;
 
 namespace CloudBackupsRecovery.Extensions.DependencyInjection
 {
