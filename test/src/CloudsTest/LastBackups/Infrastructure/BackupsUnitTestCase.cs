@@ -3,7 +3,6 @@ using Moq;
 using Shared.Domain.Bus.Command;
 using Shared.Domain.Bus.Event;
 using Shared.Domain.Bus.Query;
-using Xunit.Sdk;
 
 namespace CloudsTest.LastBackups.Infrastructure
 {
