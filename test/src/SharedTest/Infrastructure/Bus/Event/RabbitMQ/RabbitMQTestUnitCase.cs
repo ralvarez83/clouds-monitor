@@ -33,7 +33,6 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
         rabbitMQSettings.ExchangeName += postNames;
         services.AddScoped(servicesProvider => rabbitMQSettings);
         services.AddScoped<DomainEventsInformation, DomainEventsInformation>();
-        // services.AddScoped<SubscribersInformation, SubscribersInformation>();
         services.AddScoped<UseCaseFake, UseCaseFake>();
 
         services.AddScoped(serviceProvider =>
@@ -64,7 +63,6 @@ namespace SharedTest.Infrastructure.Bus.Event.RabbitMQ
           if (null == publisher)
             throw new Exception("RabbitMQPublisher not found");
           return new RabbitMQEventBus(publisher);
-          // return new RabbitMQEventBus(publisher, "test_domain_events_" + TimeSpan.FromTicks(DateTime.Now.Ticks).Milliseconds);
         }
         );
         services.AddScoped<DomainEventJsonDeserializer, DomainEventJsonDeserializer>();

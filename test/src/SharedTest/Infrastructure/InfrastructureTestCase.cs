@@ -8,8 +8,6 @@ namespace SharedTest.Infrastructure
 {
     public abstract class InfrastructureTestCase
     {
-        private const int MaxAttempts = 5;
-        private const int MillisToWaitBetweenRetries = 300;
         private readonly IHost host;
         private readonly IConfiguration configuration;
 
@@ -33,7 +31,6 @@ namespace SharedTest.Infrastructure
                  .ConfigureWebHostDefaults(webHost =>
                  {
                      webHost.UseTestServer();
-                     //  webHost.UseStartup<Worker>();
                      webHost.ConfigureTestServices(GetServices());
                      webHost.UseConfiguration(Configuration());
                  });

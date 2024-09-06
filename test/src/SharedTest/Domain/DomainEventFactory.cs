@@ -1,6 +1,4 @@
-using System.Collections.Immutable;
 using AutoFixture;
-using Shared.Domain.Bus.Event;
 using Shared.Domain.ValueObjects;
 
 namespace SharedTest.Domain
