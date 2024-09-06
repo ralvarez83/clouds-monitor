@@ -1,6 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Clouds.LastBackups.Domain;
-using Clouds.LastBackups.Infrastructure.Azure;
 using Clouds.LastBackups.Application.UpdateLastBackups;
 using Clouds.LastBackups.Application.GetCloudLastBackups;
 

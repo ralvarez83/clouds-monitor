@@ -1,17 +1,10 @@
-using System.Collections.Immutable;
-using Azure.ResourceManager.RecoveryServicesBackup.Models;
-using Clouds.LastBackups.Application.Dtos;
-using Clouds.LastBackups.Application.Dtos.Wrappers;
-using Clouds.LastBackups.Application.GetCloudLastBackups;
 using Clouds.LastBackups.Application.UpdateLastBackups;
 using Clouds.LastBackups.Domain;
-using Clouds.LastBackups.Infrastructure.Bus.Command.MediatR.UpdateLastBackups;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Shared.Domain.Bus.Command;
 using Shared.Domain.Bus.Event;
 using Shared.Domain.Bus.Query;
-using LastBackupStatusDomain = Clouds.LastBackups.Domain.LastBackupStatus;
 
 namespace CloudBackupsRecovery
 {
@@ -49,7 +42,7 @@ namespace CloudBackupsRecovery
 
         Task IHostedLifecycleService.StartingAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("1. StartingAsync has been called.");
+            // _logger.LogInformation("1. StartingAsync has been called.");
 
             return Task.CompletedTask;
         }
@@ -57,16 +50,20 @@ namespace CloudBackupsRecovery
         async Task IHostedService.StartAsync(CancellationToken cancellationToken)
         {
             // _logger.LogInformation("2. StartAsync has been called.");
+
             // Las 2 siguientes líneas son necesarias para detectar excepciones.
             // UpdateLastBackupsHandler handler = new UpdateLastBackupsHandler(new UpdateLastBackups(repository, queryBus, eventBus));
             // await handler.Handle(new UpdateLastBackupsCommand());
+
+            _logger.LogInformation("Cloud data update: RUNNING");
             await _commandBus.Dispatch(new UpdateLastBackupsCommand());
+            _logger.LogInformation("Cloud data update: DONE");
             return;
         }
 
         Task IHostedLifecycleService.StartedAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("3. StartedAsync has been called.");
+            // _logger.LogInformation("3. StartedAsync has been called.");
 
 
             return Task.CompletedTask;
@@ -75,33 +72,33 @@ namespace CloudBackupsRecovery
 
         private void OnStopping()
         {
-            _logger.LogInformation("5. OnStopping has been called.");
+            // _logger.LogInformation("5. OnStopping has been called.");
         }
 
         Task IHostedLifecycleService.StoppingAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("6. StoppingAsync has been called.");
+            // _logger.LogInformation("6. StoppingAsync has been called.");
 
             return Task.CompletedTask;
         }
 
         Task IHostedService.StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("7. StopAsync has been called.");
+            // _logger.LogInformation("7. StopAsync has been called.");
 
             return Task.CompletedTask;
         }
 
         Task IHostedLifecycleService.StoppedAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("8. StoppedAsync has been called.");
+            // _logger.LogInformation("8. StoppedAsync has been called.");
 
             return Task.CompletedTask;
         }
 
         private void OnStopped()
         {
-            _logger.LogInformation("9. OnStopped has been called.");
+            // _logger.LogInformation("9. OnStopped has been called.");
         }
     }
 }
