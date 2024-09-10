@@ -4,7 +4,7 @@ Esta aplicación es un proyecto de aprendizaje diseñado para explorar la arquit
 
 Para su implementación se ha usado la metodología TDD que nos indica que hemos de hacer 1 prueba, después hacer que pase y a continuación refactorizar. Seguiremos con la siguiente prueba.
 
-**Nota:** Si alguien se lo descarga y le resulta de utilidad, pues :grinning: :tada: **¡¡mejor que mejor!!** :grinning: :tada:
+**Nota:** Si alguien se lo descarga y le resulta de utilidad, pues :tada: :grinning: **¡¡mejor que mejor!!** :grinning: :tada:
 
 ## Aprendizajes
 
