@@ -1,0 +1,19 @@
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG configuration=Release
+WORKDIR /src
+COPY ["apps/Clouds/CloudBackupsRecovery/CloudBackupsRecovery.csproj", "apps/Clouds/CloudBackupsRecovery/"]
+RUN dotnet restore "apps/Clouds/CloudBackupsRecovery/CloudBackupsRecovery.csproj"
+COPY ["src/Clouds/.", "src/Clouds/"]
+COPY ["src/Shared/.", "src/Shared/"]
+COPY ["apps/Clouds/CloudBackupsRecovery/.", "apps/Clouds/CloudBackupsRecovery/"]
+WORKDIR /src/apps/Clouds/CloudBackupsRecovery/
+RUN dotnet build -c $configuration -o /app/build
+
+FROM build AS publish
+ARG configuration=Release
+RUN dotnet publish "CloudBackupsRecovery.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "CloudBackupsRecovery.dll"]

@@ -1,0 +1,66 @@
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: rag
+      MONGO_INITDB_ROOT_PASSWORD: rag
+    volumes:
+      - ./dockers/MongoDB/mongo-data:/data/db
+    networks:
+      - netcloudinfo
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: rag
+      ME_CONFIG_MONGODB_ADMINPASSWORD: rag
+      ME_CONFIG_MONGODB_URL: mongodb://rag:rag@mongodb:27017/
+      ME_CONFIG_BASICAUTH: false
+    networks:
+      - netcloudinfo
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.10.6-management-alpine
+    hostname: my-rabbitmq
+    volumes:
+      - "./dockers/RabbitMQ/rabbitmq:/var/lib/rabbitmq/mnesia"
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    networks:
+      - netcloudinfo
+
+  CloudBackupsRecovery:
+    image: rubenag83/cloud-backups-recovery
+    build:
+      context: .
+      dockerfile: Dockerfile-CloudBackupsRecovery
+      platforms:
+        - "linux/amd64"
+      no_cache: true
+    environment:
+      AZURE_CLIENT_ID: b7077821-da5a-4f1e-beb5-09116358649c
+      AZURE_TENANT_ID: c462a37a-a374-4527-9473-bedd2ec62d92
+      AZURE_CLIENT_SECRET: 6g~8Q~xoPiNlC24LFmAlnnnaRcvWsaDmPcRYabNS
+    volumes:
+      - "./dockers/CloudBackupsRecovery/appsettings.json:/app/publish/appsetting.json"
+    networks:
+      - netcloudinfo
+
+networks:
+  netcloudinfo:
+
+# Define named volumes
+volumes:
+  mongo-data:
+    driver: local
